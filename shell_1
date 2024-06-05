@@ -34,3 +34,52 @@ Bufferpool:BUFFERPOOL16K, TotalHit:99.92, IdxHit:99.78
 Bufferpool:BUFFERPOOL8K, TotalHit:-, IdxHit:-
 Bufferpool:BUFFERPOOL32K, TotalHit:-, IdxHit:-
 Bufferpool:MYDB_32K, TotalHit:100.00, IdxHit:100.00
+
+
+
+
+
+
+
+
+
+
+
+#!/bin/sh
+
+# Switch to the db2inst1 user and define functions
+su - db2inst1 << 'EOF'  | grep -v 'Last'
+# DB2 connection details
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
+
+# Function to execute DB2 queries
+execute_db2_query() {
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
+}
+
+# Function to get Bufferpools, TOTALHIT, and IDXHIT
+get_bufferpool_stats() {
+    execute_db2_query "SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'"
+}
+
+# Call function to collect buffer pool stats
+bufferpool_stats=$(get_bufferpool_stats)
+
+# Output data in JSON format
+echo '{"data":['
+first=true
+echo "$bufferpool_stats" | while read -r line; do
+    if [ "$first" = true ]; then
+        first=false
+    else
+        echo ","
+    fi
+    # Extracting bufferpool, totalhit, and idxhit using awk
+    echo "$line" | awk '{print "{\"{#BUFFERPOOL}\":\"" $1 "\",\"TotalHit\":\"" $2 "\",\"IdxHit\":\"" $3 "\"}"}'
+done
+echo ']}'
+
+EOF
