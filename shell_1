@@ -7,20 +7,20 @@ DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 connect to $DB_NAME user $DB_USER using $DB_PASS > /dev/null 2>&1
     db2 -x "$1"
 }
 
 # Function to check DB2 connection status
 check_db2_connection() {
-  execute_db2_query "exit" > /dev/null 2>&1
-  if [ $? -eq 0 ]; then
-    echo "DB2 connection successful."
-    return 0
-  else
-    echo "DB2 connection failed."
-    return 1
-  fi
+    execute_db2_query "exit" > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo "DB2 connection successful."
+        return 0
+    else
+        echo "DB2 connection failed."
+        return 1
+    fi
 }
 
 # Main script starts here
@@ -39,20 +39,19 @@ IFS=$'\n'
 
 echo "Sending data to Zabbix..."
 for line in $result; do
-  bufferpool=$(echo $line | awk '{print $1}')
-  totalhit=$(echo $line | awk '{print $2}')
-  idxhit=$(echo $line | awk '{print $3}')
+    bufferpool=$(echo $line | awk '{print $1}')
+    totalhit=$(echo $line | awk '{print $2}')
+    idxhit=$(echo $line | awk '{print $3}')
   
-  echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
+    echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
 
-  # Send the data to Zabbix
-  # Replace ZABBIX_SERVER and ZABBIX_HOST with your Zabbix server address and host name
-  zabbix_sender -z <Zabbix server address> -s <Host name> -k bufferpool.totalhit[$bufferpool] -o $totalhit
-  echo "Sent: bufferpool.totalhit[$bufferpool] with value $totalhit"
+    # Send the data to Zabbix
+    # Replace ZABBIX_SERVER and ZABBIX_HOST with your Zabbix server address and host name
+    zabbix_sender -z <Zabbix server address> -s <Host name> -k bufferpool.totalhit[$bufferpool] -o $totalhit
+    echo "Sent: bufferpool.totalhit[$bufferpool] with value $totalhit"
 
-  zabbix_sender -z <Zabbix server address> -s <Host name> -k bufferpool.idxhit[$bufferpool] -o $idxhit
-  echo "Sent: bufferpool.idxhit[$bufferpool] with value $idxhit"
-
+    zabbix_sender -z <Zabbix server address> -s <Host name> -k bufferpool.idxhit[$bufferpool] -o $idxhit
+    echo "Sent: bufferpool.idxhit[$bufferpool] with value $idxhit"
 done
 
 echo "All data sent successfully."
