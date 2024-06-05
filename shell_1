@@ -30,18 +30,12 @@ while read -r bufferpool totalhit idxhit; do
     else
         echo ","
     fi
-    # Check if totalhit and idxhit are valid numbers or not
-    if [[ "$totalhit" =~ ^[0-9.]+$ ]] && [[ "$idxhit" =~ ^[0-9.]+$ ]]; then
-        echo -n '{"name":"' "$bufferpool" '", "total_hits":' "$totalhit" ', "index_hits":' "$idxhit" '}'
-    else
+    # Check if bufferpool name contains SQL error codes
+    if echo "$bufferpool" | grep -q "SQL"; then
         echo -n '{"name":"' "$bufferpool" '", "total_hits":null, "index_hits":null}'
+    else
+        echo -n '{"name":"' "$bufferpool" '", "total_hits":' "$totalhit" ', "index_hits":' "$idxhit" '}'
     fi
 done <<< "$bufferpools_data"
 echo ']}'
 EOF
-
-
-{"bufferpools":[
-{"name":" SQL0206N ", "total_hits":null, "index_hits":null},
-{"name":" SQLSTATE=42703 ", "total_hits":null, "index_hits":null}]}
-
