@@ -53,13 +53,14 @@ EOF
 
 
 
- sh check1.sh
-Last login: Wed Jun  5 11:58:21 +08 2024
-Password: Sending data to Zabbix...
-Bufferpool: SQL1024N, Total Hit Ratio: A, Index Hit Ratio: database
-Sent: bufferpool.totalhit[SQL1024N] with value A
-Sent: bufferpool.idxhit[SQL1024N] with value database
-All data sent successfully.
+db2 "SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO WHERE BP_NAME NOT LIKE 'IBMSYSTEM%'"
+
+BUFFERPOOL                                                                                                                       TOTALHIT IDXHIT
+-------------------------------------------------------------------------------------------------------------------------------- -------- -------
+IBMDEFAULTBP                                                                                                                        99.97   99.81
+BUFFERPOOL16K                                                                                                                       99.92   99.78
+BUFFERPOOL8K                                                                                                                            -       -
+BUFFERPOOL32K                                                                                                                           -       -
+MYDB_32K                                                                                                                           100.00  100.00
 
 
-db2 connect to pegadb user db2inst1 using abcd1234
