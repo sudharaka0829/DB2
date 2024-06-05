@@ -44,3 +44,7 @@ With these configurations, Zabbix will automatically discover the buffer pools b
 ,
 {"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"100.00","IdxHit":"100.00"}
 ]}
+
+
+UserParameter=bufferpool.stats[*], /bin/cat /etc/zabbix/scripts/bufferpool_data.json
+
