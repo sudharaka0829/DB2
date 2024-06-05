@@ -1,16 +1,43 @@
-$ ./get_bufferpool_data.sh
+#!/bin/bash
 
-Sending data to Zabbix...
-Bufferpool: BP1, Total Hit Ratio: 98.5, Index Hit Ratio: 97.8
-Sent: bufferpool.totalhit[BP1] with value 98.5
-Sent: bufferpool.idxhit[BP1] with value 97.8
+# DB2 connection details
+DB_USER="db2inst1"
+DB_PASS="db2inst1"
+DB_NAME="BOOK"
 
-Bufferpool: BP2, Total Hit Ratio: 96.7, Index Hit Ratio: 95.5
-Sent: bufferpool.totalhit[BP2] with value 96.7
-Sent: bufferpool.idxhit[BP2] with value 95.5
+# Zabbix server details
+ZABBIX_SERVER="<Zabbix server address>"
+ZABBIX_HOST="<Host name>"
 
-Bufferpool: BP3, Total Hit Ratio: 99.1, Index Hit Ratio: 98.6
-Sent: bufferpool.totalhit[BP3] with value 99.1
-Sent: bufferpool.idxhit[BP3] with value 98.6
+# Function to execute DB2 queries
+execute_db2_query() {
+  echo "$DB_PASS" | su - $DB_USER -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
+}
 
-All data sent successfully.
+# SQL Query
+QUERY="SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO WHERE BP_NAME NOT LIKE 'IBMSYSTEM%'"
+
+# Execute the query and fetch the data
+result=$(execute_db2_query "$QUERY")
+
+# Process the result
+IFS=$'\n'
+
+echo "Sending data to Zabbix..."
+for line in $result; do
+  bufferpool=$(echo $line | awk '{print $1}')
+  totalhit=$(echo $line | awk '{print $2}')
+  idxhit=$(echo $line | awk '{print $3}')
+  
+  echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
+
+  # Send the data to Zabbix
+  zabbix_sender -z $ZABBIX_SERVER -s $ZABBIX_HOST -k bufferpool.totalhit[$bufferpool] -o $totalhit
+  echo "Sent: bufferpool.totalhit[$bufferpool] with value $totalhit"
+
+  zabbix_sender -z $ZABBIX_SERVER -s $ZABBIX_HOST -k bufferpool.idxhit[$bufferpool] -o $idxhit
+  echo "Sent: bufferpool.idxhit[$bufferpool] with value $idxhit"
+
+done
+
+echo "All data sent successfully."
