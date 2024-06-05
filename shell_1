@@ -249,3 +249,6 @@ echo ']}'
 
 EOF
 
+
+
+UserParameter=bufferpool.stats[*], cat /path/to/bufferpool_data.json
