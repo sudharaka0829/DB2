@@ -1,28 +1,5 @@
-#!/bin/sh
-
-# Function to execute DB2 queries
-execute_db2_query() {
-    db2 connect to pegadb > /dev/null 2>&1
-    db2 -x "$1"
-}
-
-# Function to get Bufferpools
-get_bufferpools() {
-    execute_db2_query "SELECT BP_NAME FROM SYSIBMADM.BP_HITRATIO WHERE bp_name NOT LIKE 'IBMSYSTEM%'"
-}
-
-# Call function to collect buffer pools
-bufferpools=$(get_bufferpools)
-
-# Output data in JSON format
-echo '{"data":['
-first=true
-while read -r bufferpool; do
-    if [ "$first" = true ]; then
-        first=false
-    else
-        echo ","
-    fi
-    echo -n '{"{#BUFFERPOOL}":"' "$bufferpool" '"}'
-done <<< "$bufferpools"
-echo ']}'
+Bufferpool:IBMDEFAULTBP, TotalHit:99.97, IdxHit:99.81
+Bufferpool:BUFFERPOOL16K, TotalHit:99.92, IdxHit:99.78
+Bufferpool:BUFFERPOOL8K, TotalHit:-, IdxHit:-
+Bufferpool:BUFFERPOOL32K, TotalHit:-, IdxHit:-
+Bufferpool:MYDB_32K, TotalHit:100.00, IdxHit:100.00
