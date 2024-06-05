@@ -1,5 +1,6 @@
-#!/bin/bash
 
+# Switch to the db2inst1 user and define functions
+su - db2inst1 << 'EOF'  | grep -v 'Last'
 # DB2 connection details
 DB_USER="your_db_username"
 DB_PASS="your_db_password"
@@ -7,51 +8,21 @@ DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-    db2 connect to $DB_NAME user $DB_USER using $DB_PASS > /dev/null 2>&1
+    db2 connect to $DB_NAME > /dev/null 2>&1
     db2 -x "$1"
 }
 
-# Function to check DB2 connection status
-check_db2_connection() {
-    execute_db2_query "exit" > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        echo "DB2 connection successful."
-        return 0
-    else
-        echo "DB2 connection failed."
-        return 1
-    fi
+# Function to get the database size
+get_database_size() {
+    execute_db2_query "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION" | grep -o '[0-9]*' | head -n1
 }
 
-# Main script starts here
 
-# Check DB2 connection
-check_db2_connection || exit 1
 
-# SQL Query
-QUERY="SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO WHERE BP_NAME NOT LIKE 'IBMSYSTEM%'"
+# Call functions to collect data
+database_size=$(get_database_size | sed 's/^[[:space:]]*//')
 
-# Execute the query and fetch the data
-result=$(execute_db2_query "$QUERY")
+# Output data in a format readable by Zabbix
+echo "DatabaseSize:$database_size"
 
-# Process the result
-IFS=$'\n'
-
-echo "Sending data to Zabbix..."
-for line in $result; do
-    bufferpool=$(echo $line | awk '{print $1}')
-    totalhit=$(echo $line | awk '{print $2}')
-    idxhit=$(echo $line | awk '{print $3}')
-  
-    echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
-
-    # Send the data to Zabbix
-    # Replace ZABBIX_SERVER and ZABBIX_HOST with your Zabbix server address and host name
-    zabbix_sender -z <Zabbix server address> -s <Host name> -k bufferpool.totalhit[$bufferpool] -o $totalhit
-    echo "Sent: bufferpool.totalhit[$bufferpool] with value $totalhit"
-
-    zabbix_sender -z <Zabbix server address> -s <Host name> -k bufferpool.idxhit[$bufferpool] -o $idxhit
-    echo "Sent: bufferpool.idxhit[$bufferpool] with value $idxhit"
-done
-
-echo "All data sent successfully."
+EOF
