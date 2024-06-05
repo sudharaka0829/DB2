@@ -1,0 +1,34 @@
+Database Name 
+select current server as server from sysibm.sysdummy1
+ 
+Database Status
+SELECT DB_STATUS FROM TABLE(MON_GET_DATABASE(-2)) AS T
+ 
+Database size
+select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION
+ 
+Bufferpools
+select bp_name from SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'
+ 
+Bufferpools , TOTALHIT and IDXHIT
+SELECT BP_NAME as bufferpool,TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'
+ 
+Database tables
+select DISTINCT tbsp_name from SYSIBMADM.TBSP_UTILIZATION
+ 
+Database Table size and used table size 
+SELECT tbsp_name as TABLESPACE, sum(tbsp_used_size_kb)/1024 as usedkb,sum(tbsp_total_size_kb)/1024  as totalkb FROM SYSIBMADM.TBSP_UTILIZATION GROUP BY tbsp_name
+ 
+Active Connection
+SELECT COUNT(*) FROM SYSIBMADM.APPLICATIONS WHERE APPL_STATUS='UOW EXECUTING'
+ 
+Loackwait process count 
+SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;
+ 
+LOG UTILIZATION PERCENT
+select LOG_UTILIZATION_PERCENT from sysibmadm.MON_TRANSACTION_LOG_UTILIZATION
+ 
+Database Connection status
+db2 get connection state
+ 
+Log errors with log monitoring
