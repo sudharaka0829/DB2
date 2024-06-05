@@ -142,5 +142,5 @@ This setup ensures that Zabbix dynamically discovers buffer pools and creates th
 
 
 
-
+I’m working on the db2 health check monitoring activity using Zabbix and data collection is doing using some shell script which contain DB2 queries. I need your help to verify the queries to implement the monitoring for db2. Kindly check the attached sheet and advise further.  
 
