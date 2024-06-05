@@ -1,66 +1,26 @@
-#!/bin/bash
-
-# Zabbix server details
-ZABBIX_SERVER="<Zabbix server address>"
-ZABBIX_HOST="<Host name>"
+#!/bin/sh
 
 # Switch to the db2inst1 user and define functions
-su - db2inst1 << 'EOF'
+su - db2inst1 << 'EOF' | grep -v 'Last'
 # DB2 connection details
-DB_USER="db2inst1"
-DB_PASS="db2inst1"
-DB_NAME="BOOK"
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-  echo "$DB_PASS" | su - $DB_USER -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
 }
 
-# Function to execute DB2 queries and get bufferpool hit ratio data
-get_bufferpool_hit_ratio() {
-  # SQL Query
-  QUERY="SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO WHERE BP_NAME NOT LIKE 'IBMSYSTEM%'"
-  
-  # Execute the query and fetch the data
-  result=$(execute_db2_query "$QUERY")
-  
-  # Process the result
-  IFS=$'\n'
-  
-  echo "Sending data to Zabbix..."
-  for line in $result; do
-    bufferpool=$(echo $line | awk '{print $1}')
-    totalhit=$(echo $line | awk '{print $2}')
-    idxhit=$(echo $line | awk '{print $3}')
-    
-    echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
-  
-    # Send the data to Zabbix
-    zabbix_sender -z $ZABBIX_SERVER -s $ZABBIX_HOST -k bufferpool.totalhit[$bufferpool] -o $totalhit
-    echo "Sent: bufferpool.totalhit[$bufferpool] with value $totalhit"
-  
-    zabbix_sender -z $ZABBIX_SERVER -s $ZABBIX_HOST -k bufferpool.idxhit[$bufferpool] -o $idxhit
-    echo "Sent: bufferpool.idxhit[$bufferpool] with value $idxhit"
-  done
-  
-  echo "All data sent successfully."
+# Function to get table usages
+get_table_usages() {
+    execute_db2_query "SELECT TBSP_USED_PAGES * 100.0 / TBSP_TOTAL_PAGES AS USED_PERCENTAGE FROM SYSIBMADM.TBSP_UTILIZATION" | grep -v 'Division' |  tr -d [:space:]
 }
 
-# Call function to get bufferpool hit ratio data
-get_bufferpool_hit_ratio
+
+table_usages=$(get_table_usages | sed 's/^[[:space:]]*//')
+
+echo "TableUsages:$table_usages"
 
 EOF
-
-
-
-db2 "SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO WHERE BP_NAME NOT LIKE 'IBMSYSTEM%'"
-
-BUFFERPOOL                                                                                                                       TOTALHIT IDXHIT
--------------------------------------------------------------------------------------------------------------------------------- -------- -------
-IBMDEFAULTBP                                                                                                                        99.97   99.81
-BUFFERPOOL16K                                                                                                                       99.92   99.78
-BUFFERPOOL8K                                                                                                                            -       -
-BUFFERPOOL32K                                                                                                                           -       -
-MYDB_32K                                                                                                                           100.00  100.00
-
-
