@@ -1,85 +1,28 @@
-<zabbix_export>
-  <version>5.0</version>
-  <groups>
-    <group>
-      <name>Templates/DB</name>
-    </group>
-  </groups>
-  <templates>
-    <template>
-      <template>Template DB Bufferpool</template>
-      <name>Template DB Bufferpool</name>
-      <groups>
-        <group>
-          <name>Templates/DB</name>
-        </group>
-      </groups>
-      <applications>
-        <application>
-          <name>Bufferpool Statistics</name>
-        </application>
-      </applications>
-      <items>
-        <item>
-          <name>Bufferpool Total Hit Ratio</name>
-          <type>2</type>
-          <key>bufferpool.totalhit[{#BUFFERPOOL}]</key>
-          <value_type>0</value_type>
-          <units>%</units>
-          <applications>
-            <application>
-              <name>Bufferpool Statistics</name>
-            </application>
-          </applications>
-        </item>
-        <item>
-          <name>Bufferpool Index Hit Ratio</name>
-          <type>2</type>
-          <key>bufferpool.idxhit[{#BUFFERPOOL}]</key>
-          <value_type>0</value_type>
-          <units>%</units>
-          <applications>
-            <application>
-              <name>Bufferpool Statistics</name>
-            </application>
-          </applications>
-        </item>
-      </items>
-      <discovery_rules>
-        <discovery_rule>
-          <name>Bufferpool Discovery</name>
-          <type>9</type>
-          <key>bufferpool.discovery</key>
-          <item_prototypes>
-            <item_prototype>
-              <name>Bufferpool Total Hit Ratio {#BUFFERPOOL}</name>
-              <type>2</type>
-              <key>bufferpool.totalhit[{#BUFFERPOOL}]</key>
-              <value_type>0</value_type>
-              <units>%</units>
-            </item_prototype>
-            <item_prototype>
-              <name>Bufferpool Index Hit Ratio {#BUFFERPOOL}</name>
-              <type>2</type>
-              <key>bufferpool.idxhit[{#BUFFERPOOL}]</key>
-              <value_type>0</value_type>
-              <units>%</units>
-            </item_prototype>
-          </item_prototypes>
-        </discovery_rule>
-      </discovery_rules>
-      <triggers>
-        <trigger>
-          <expression>{Template DB Bufferpool:bufferpool.totalhit[{#BUFFERPOOL}].last()}<95</expression>
-          <name>Low Total Hit Ratio on {#BUFFERPOOL}</name>
-          <priority>4</priority>
-        </trigger>
-        <trigger>
-          <expression>{Template DB Bufferpool:bufferpool.idxhit[{#BUFFERPOOL}].last()}<95</expression>
-          <name>Low Index Hit Ratio on {#BUFFERPOOL}</name>
-          <priority>4</priority>
-        </trigger>
-      </triggers>
-    </template>
-  </templates>
-</zabbix_export>
+Discovery Rule:
+
+Go to Configuration > Discovery.
+Click on Create discovery rule.
+Configure the discovery rule:
+Name: Specify a name for the discovery rule.
+Type: Select Zabbix trapper.
+Key: Enter a unique key, e.g., bufferpool.discovery.
+Update interval: Set according to your requirements.
+Filters: Leave empty.
+Prototypes: Add the item prototypes (next step).
+Click Add to save the discovery rule.
+Item Prototypes:
+
+Go to Configuration > Discovery.
+Click on the discovery rule you created.
+Go to the Prototypes tab.
+Click Create prototype item.
+Configure the item prototype:
+Name: {#BUFFERPOOL}
+Type: Zabbix trapper
+Key: Enter a unique key, e.g., bufferpool[{#BUFFERPOOL}].
+Type of information: Choose Numeric (float) or Text based on the data type.
+Update interval: Set according to your requirements.
+Click Add to save the item prototype.
+Trigger Prototypes (optional):
+
+If you want to create trigger prototypes, follow similar steps as item prototypes within the discovery rule configuration.
