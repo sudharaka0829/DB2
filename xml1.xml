@@ -82,3 +82,8 @@
     </template>
   </templates>
 </zabbix_export>
+
+
+
+
+Cannot read XML: (68) StartTag: invalid element name [Line: 72 | Column: 90]. [conf.import.php:89 → CApiWrapper->__call() → CFrontendApiWrapper->callMethod() → CApiWrapper->callMethod() → CFrontendApiWrapper->callClientMethod() → CLocalApiClient->callMethod() → CConfiguration->import() → CXmlImportReader->read() in include/classes/api/services/CConfiguration.php:151]
