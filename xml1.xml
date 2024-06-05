@@ -18,7 +18,7 @@ Go to the Prototypes tab.
 Click Create prototype item.
 Configure the item prototype:
 Name: {#BUFFERPOOL}
-Type: Zabbix trapper
+Type: Zabbix trapper 
 Key: Enter a unique key, e.g., bufferpool[{#BUFFERPOOL}].
 Type of information: Choose Numeric (float) or Text based on the data type.
 Update interval: Set according to your requirements.
