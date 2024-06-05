@@ -48,3 +48,99 @@ With these configurations, Zabbix will automatically discover the buffer pools b
 
 UserParameter=bufferpool.stats[*], /bin/cat /etc/zabbix/scripts/bufferpool_data.json
 
+
+
+
+
+
+Step 1: Create the Discovery Rule
+Navigate to Discovery Rules:
+
+Configuration -> Hosts -> Select your host -> Discovery rules -> Create discovery rule.
+Configure the Discovery Rule:
+
+Name: Buffer Pool Discovery
+Type: Zabbix agent
+Key: bufferpool.stats
+Type of Information: JSON
+Keep lost resources period: 30d (or as needed)
+Update interval: 1h (or as needed)
+Preprocessing:
+Add preprocessing step: JSONPath with the value $.data[*]
+Step 2: Create Item Prototypes
+Navigate to Item Prototypes:
+
+Inside your newly created discovery rule, go to the Item prototypes tab.
+Click on Create item prototype.
+Create TotalHit Item Prototype:
+
+Name: TotalHit for {#BUFFERPOOL}
+Type: Zabbix agent
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
+Type of Information: Numeric (float)
+Units: % (if applicable)
+Application: Buffer Pools
+Preprocessing:
+Add preprocessing step: JSONPath with the value $.data[?(@.{#BUFFERPOOL}=="{#BUFFERPOOL}")].TotalHit
+Create IdxHit Item Prototype:
+
+Name: IdxHit for {#BUFFERPOOL}
+Type: Zabbix agent
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
+Type of Information: Numeric (float)
+Units: % (if applicable)
+Application: Buffer Pools
+Preprocessing:
+Add preprocessing step: JSONPath with the value $.data[?(@.{#BUFFERPOOL}=="{#BUFFERPOOL}")].IdxHit
+Full Configuration Example
+Discovery Rule
+Name: Buffer Pool Discovery
+Type: Zabbix agent
+Key: bufferpool.stats
+Type of Information: JSON
+Keep lost resources period: 30d
+Update interval: 1h
+Preprocessing:
+JSONPath with the value $.data[*]
+Item Prototype: TotalHit for {#BUFFERPOOL}
+Name: TotalHit for {#BUFFERPOOL}
+Type: Zabbix agent
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
+Type of Information: Numeric (float)
+Units: %
+Application: Buffer Pools
+Preprocessing:
+JSONPath with the value $.data[?(@.{#BUFFERPOOL}=="{#BUFFERPOOL}")].TotalHit
+Item Prototype: IdxHit for {#BUFFERPOOL}
+Name: IdxHit for {#BUFFERPOOL}
+Type: Zabbix agent
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
+Type of Information: Numeric (float)
+Units: %
+Application: Buffer Pools
+Preprocessing:
+JSONPath with the value $.data[?(@.{#BUFFERPOOL}=="{#BUFFERPOOL}")].IdxHit
+Verification
+After setting up the discovery rule and item prototypes, you can verify that the items are being created correctly:
+
+Trigger Discovery:
+
+Manually trigger the discovery rule or wait for the next scheduled interval.
+Check Discovered Items:
+
+Navigate to Monitoring -> Latest data.
+Select the host and check under the Buffer Pools application to see the discovered items.
+Test Data Collection:
+
+Ensure that the TotalHit and IdxHit values are being populated for each discovered buffer pool.
+This setup ensures that Zabbix dynamically discovers buffer pools and creates the relevant monitoring items based on the JSON data provided by your bufferpool.stats UserParameter.
+
+
+
+
+
+
+
+
+
+
