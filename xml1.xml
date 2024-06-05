@@ -1,0 +1,82 @@
+<zabbix_export>
+  <version>6.0</version>
+  <groups>
+    <group>
+      <name>Templates/DB</name>
+    </group>
+  </groups>
+  <templates>
+    <template>
+      <template>Template DB Bufferpool</template>
+      <name>Template DB Bufferpool</name>
+      <groups>
+        <group>
+          <name>Templates/DB</name>
+        </group>
+      </groups>
+      <items>
+        <item>
+          <name>Bufferpool Total Hit Ratio</name>
+          <type>Zabbix trapper</type>
+          <key>bufferpool.totalhit[{#BUFFERPOOL}]</key>
+          <value_type>Numeric (float)</value_type>
+          <units>%</units>
+          <applications>
+            <application>
+              <name>Bufferpool Statistics</name>
+            </application>
+          </applications>
+          <triggers>
+            <trigger>
+              <expression>{Template DB Bufferpool:bufferpool.totalhit[{#BUFFERPOOL}].last()}<95</expression>
+              <name>Low Total Hit Ratio on {#BUFFERPOOL}</name>
+              <priority>4</priority>
+            </trigger>
+          </triggers>
+        </item>
+        <item>
+          <name>Bufferpool Index Hit Ratio</name>
+          <type>Zabbix trapper</type>
+          <key>bufferpool.idxhit[{#BUFFERPOOL}]</key>
+          <value_type>Numeric (float)</value_type>
+          <units>%</units>
+          <applications>
+            <application>
+              <name>Bufferpool Statistics</name>
+            </application>
+          </applications>
+          <triggers>
+            <trigger>
+              <expression>{Template DB Bufferpool:bufferpool.idxhit[{#BUFFERPOOL}].last()}<95</expression>
+              <name>Low Index Hit Ratio on {#BUFFERPOOL}</name>
+              <priority>4</priority>
+            </trigger>
+          </triggers>
+        </item>
+      </items>
+      <discovery_rules>
+        <discovery_rule>
+          <name>Bufferpool Discovery</name>
+          <type>Dependent item</type>
+          <key>bufferpool.discovery</key>
+          <item_prototypes>
+            <item_prototype>
+              <name>Bufferpool Total Hit Ratio {#BUFFERPOOL}</name>
+              <type>Dependent item</type>
+              <key>bufferpool.totalhit[{#BUFFERPOOL}]</key>
+              <value_type>Numeric (float)</value_type>
+              <units>%</units>
+            </item_prototype>
+            <item_prototype>
+              <name>Bufferpool Index Hit Ratio {#BUFFERPOOL}</name>
+              <type>Dependent item</type>
+              <key>bufferpool.idxhit[{#BUFFERPOOL}]</key>
+              <value_type>Numeric (float)</value_type>
+              <units>%</units>
+            </item_prototype>
+          </item_prototypes>
+        </discovery_rule>
+      </discovery_rules>
+    </template>
+  </templates>
+</zabbix_export>
