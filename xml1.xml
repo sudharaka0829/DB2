@@ -84,3 +84,85 @@ echo "$json_data" | zabbix_sender -z "$ZABBIX_SERVER" -s "$ZABBIX_HOST" -k "$ZAB
 EOF
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    sh check.sh
+zabbix_sender [1503239]: too few or mutually exclusive options used
+usage:
+  zabbix_sender [-v] -z server [-p port] [-I IP-address] -s host -k key
+                -o value
+  zabbix_sender [-v] -z server [-p port] [-I IP-address] [-s host] [-T] [-N]
+                [-r] -i input-file
+  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
+                [-s host] -k key -o value
+  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
+                [-s host] [-T] [-N] [-r] -i input-file
+  zabbix_sender [-v] -z server [-p port] [-I IP-address] -s host
+                --tls-connect cert --tls-ca-file CA-file
+                [--tls-crl-file CRL-file]
+                [--tls-server-cert-issuer cert-issuer]
+                [--tls-server-cert-subject cert-subject]
+                --tls-cert-file cert-file --tls-key-file key-file
+                [--tls-cipher13 cipher-string] [--tls-cipher cipher-string]
+                -k key -o value
+  zabbix_sender [-v] -z server [-p port] [-I IP-address] [-s host]
+                --tls-connect cert --tls-ca-file CA-file
+                [--tls-crl-file CRL-file]
+                [--tls-server-cert-issuer cert-issuer]
+                [--tls-server-cert-subject cert-subject]
+                --tls-cert-file cert-file --tls-key-file key-file
+                [--tls-cipher13] cipher-string [--tls-cipher cipher-string]
+                [-T] [-N] [-r] -i input-file
+  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
+                [-s host] --tls-connect cert --tls-ca-file CA-file
+                [--tls-crl-file CRL-file]
+                [--tls-server-cert-issuer cert-issuer]
+                [--tls-server-cert-subject cert-subject]
+                --tls-cert-file cert-file --tls-key-file key-file
+                [--tls-cipher13 cipher-string] [--tls-cipher cipher-string]
+                -k key -o value
+  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
+                [-s host] --tls-connect cert --tls-ca-file CA-file
+                [--tls-crl-file CRL-file]
+                [--tls-server-cert-issuer cert-issuer]
+                [--tls-server-cert-subject cert-subject]
+                --tls-cert-file cert-file --tls-key-file key-file
+                [--tls-cipher13 cipher-string] [--tls-cipher cipher-string]
+                [-T] [-N] [-r] -i input-file
+  zabbix_sender [-v] -z server [-p port] [-I IP-address] -s host
+                --tls-connect psk --tls-psk-identity PSK-identity
+                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
+                [--tls-cipher cipher-string] -k key -o value
+  zabbix_sender [-v] -z server [-p port] [-I IP-address] [-s host]
+                --tls-connect psk --tls-psk-identity PSK-identity
+                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
+                [--tls-cipher cipher-string] [-T] [-N] [-r] -i input-file
+  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
+                [-s host] --tls-connect psk --tls-psk-identity PSK-identity
+                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
+                [--tls-cipher cipher-string] -k key -o value
+  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
+                [-s host] --tls-connect psk --tls-psk-identity PSK-identity
+                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
+                [--tls-cipher cipher-string] [-T] [-N] [-r] -i input-file
+  zabbix_sender -h
+  zabbix_sender -V
+
+
