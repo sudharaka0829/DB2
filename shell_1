@@ -27,3 +27,10 @@ echo "$bufferpool_stats" | while read -r line; do
 done
 
 EOF
+
+
+Bufferpool:IBMDEFAULTBP, TotalHit:99.97, IdxHit:99.81
+Bufferpool:BUFFERPOOL16K, TotalHit:99.92, IdxHit:99.78
+Bufferpool:BUFFERPOOL8K, TotalHit:-, IdxHit:-
+Bufferpool:BUFFERPOOL32K, TotalHit:-, IdxHit:-
+Bufferpool:MYDB_32K, TotalHit:100.00, IdxHit:100.00
