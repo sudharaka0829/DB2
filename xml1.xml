@@ -1,217 +1,24 @@
-Discovery Rule:
+2. Create Item Prototypes:
+After creating the discovery rule, click on Item prototypes tab within the discovery rule configuration.
+Click on Create item prototype.
+For TotalHits:
+Name: Enter a name for the item prototype, e.g., "Bufferpool TotalHit".
+Key: Enter a key for the item prototype, e.g., "bufferpool.totalhit[{#BUFFERPOOL}]".
+Type: Select the appropriate type based on the data you want to collect (e.g., "Numeric (float)" for TotalHit).
+Key parameters: Enter {#BUFFERPOOL} as the key parameter.
+Type of information: Select the appropriate type based on the data you want to collect (e.g., "Numeric (float)" for TotalHit).
+Data type: Select the appropriate data type.
+Update interval (in sec): Set the update interval according to your requirement.
+For IdxHits:
+Name: Enter a name for the item prototype, e.g., "Bufferpool IdxHit".
+Key: Enter a key for the item prototype, e.g., "bufferpool.idxhit[{#BUFFERPOOL}]".
+Type: Select the appropriate type based on the data you want to collect (e.g., "Numeric (float)" for IdxHit).
+Key parameters: Enter {#BUFFERPOOL} as the key parameter.
+Type of information: Select the appropriate type based on the data you want to collect (e.g., "Numeric (float)" for IdxHit).
+Data type: Select the appropriate data type.
+Update interval (in sec): Set the update interval according to your requirement.
+Save the item prototypes.
+3. Apply Changes:
+After creating the discovery rule and item prototypes, ensure to link the discovery rule to the appropriate host(s) in the "Discovery" tab of the host configuration. Finally, click on Update to apply the changes.
 
-Go to Configuration > Discovery.
-Click on Create discovery rule.
-Configure the discovery rule:
-Name: Specify a name for the discovery rule.
-Type: Select Zabbix trapper.
-Key: Enter a unique key, e.g., bufferpool.discovery.
-Update interval: Set according to your requirements.
-Filters: Leave empty.
-Prototypes: Add the item prototypes (next step).
-Click Add to save the discovery rule.
-Item Prototypes:
-
-Go to Configuration > Discovery.
-Click on the discovery rule you created.
-Go to the Prototypes tab.
-Click Create prototype item.
-Configure the item prototype:
-Name: {#BUFFERPOOL}
-Type: Zabbix trapper 
-Key: Enter a unique key, e.g., bufferpool[{#BUFFERPOOL}].
-Type of information: Choose Numeric (float) or Text based on the data type.
-Update interval: Set according to your requirements.
-Click Add to save the item prototype.
-Trigger Prototypes (optional):
-
-If you want to create trigger prototypes, follow similar steps as item prototypes within the discovery rule configuration.
-
-
-
-
-sh check.sh -vv
-zabbix_sender [1502887]: ERROR: [line 1] 'Key' required
-Sending failed. Use option -vv for more detailed output.
-
-
-
-
-#!/bin/sh
-
-# Define Zabbix server details
-ZABBIX_SERVER="your_zabbix_server"
-ZABBIX_HOST="your_host_name"
-ZABBIX_ITEM_KEY="bufferpool.discovery"
-
-# Switch to the db2inst1 user and define functions
-su - db2inst1 << 'EOF'  | grep -v 'Last'
-# DB2 connection details
-DB_USER="your_db_username"
-DB_PASS="your_db_password"
-DB_NAME="pegadb"
-
-# Function to execute DB2 queries
-execute_db2_query() {
-    db2 connect to $DB_NAME > /dev/null 2>&1
-    db2 -x "$1"
-}
-
-# Function to get Bufferpools, TOTALHIT, and IDXHIT
-get_bufferpool_stats() {
-    execute_db2_query "SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'"
-}
-
-# Call function to collect buffer pool stats
-bufferpool_stats=$(get_bufferpool_stats)
-
-# Output data in JSON format
-json_data='{"data":['
-first=true
-echo "$bufferpool_stats" | while read -r line; do
-    if [ "$first" = true ]; then
-        first=false
-    else
-        json_data="$json_data,"
-    fi
-    # Extracting bufferpool, totalhit, and idxhit using awk
-    json_data="$json_data$(echo "$line" | awk '{print "{\"{#BUFFERPOOL}\":\"" $1 "\",\"TotalHit\":\"" $2 "\",\"IdxHit\":\"" $3 "\"}"}')"
-done
-json_data="$json_data]}"
-
-# Send JSON data to Zabbix using zabbix_sender utility
-echo "$json_data" | zabbix_sender -z "$ZABBIX_SERVER" -s "$ZABBIX_HOST" -k "$ZABBIX_ITEM_KEY" -T -i -
-EOF
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    sh check.sh
-zabbix_sender [1503239]: too few or mutually exclusive options used
-usage:
-  zabbix_sender [-v] -z server [-p port] [-I IP-address] -s host -k key
-                -o value
-  zabbix_sender [-v] -z server [-p port] [-I IP-address] [-s host] [-T] [-N]
-                [-r] -i input-file
-  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
-                [-s host] -k key -o value
-  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
-                [-s host] [-T] [-N] [-r] -i input-file
-  zabbix_sender [-v] -z server [-p port] [-I IP-address] -s host
-                --tls-connect cert --tls-ca-file CA-file
-                [--tls-crl-file CRL-file]
-                [--tls-server-cert-issuer cert-issuer]
-                [--tls-server-cert-subject cert-subject]
-                --tls-cert-file cert-file --tls-key-file key-file
-                [--tls-cipher13 cipher-string] [--tls-cipher cipher-string]
-                -k key -o value
-  zabbix_sender [-v] -z server [-p port] [-I IP-address] [-s host]
-                --tls-connect cert --tls-ca-file CA-file
-                [--tls-crl-file CRL-file]
-                [--tls-server-cert-issuer cert-issuer]
-                [--tls-server-cert-subject cert-subject]
-                --tls-cert-file cert-file --tls-key-file key-file
-                [--tls-cipher13] cipher-string [--tls-cipher cipher-string]
-                [-T] [-N] [-r] -i input-file
-  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
-                [-s host] --tls-connect cert --tls-ca-file CA-file
-                [--tls-crl-file CRL-file]
-                [--tls-server-cert-issuer cert-issuer]
-                [--tls-server-cert-subject cert-subject]
-                --tls-cert-file cert-file --tls-key-file key-file
-                [--tls-cipher13 cipher-string] [--tls-cipher cipher-string]
-                -k key -o value
-  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
-                [-s host] --tls-connect cert --tls-ca-file CA-file
-                [--tls-crl-file CRL-file]
-                [--tls-server-cert-issuer cert-issuer]
-                [--tls-server-cert-subject cert-subject]
-                --tls-cert-file cert-file --tls-key-file key-file
-                [--tls-cipher13 cipher-string] [--tls-cipher cipher-string]
-                [-T] [-N] [-r] -i input-file
-  zabbix_sender [-v] -z server [-p port] [-I IP-address] -s host
-                --tls-connect psk --tls-psk-identity PSK-identity
-                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
-                [--tls-cipher cipher-string] -k key -o value
-  zabbix_sender [-v] -z server [-p port] [-I IP-address] [-s host]
-                --tls-connect psk --tls-psk-identity PSK-identity
-                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
-                [--tls-cipher cipher-string] [-T] [-N] [-r] -i input-file
-  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
-                [-s host] --tls-connect psk --tls-psk-identity PSK-identity
-                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
-                [--tls-cipher cipher-string] -k key -o value
-  zabbix_sender [-v] -c config-file [-z server] [-p port] [-I IP-address]
-                [-s host] --tls-connect psk --tls-psk-identity PSK-identity
-                --tls-psk-file PSK-file [--tls-cipher13 cipher-string]
-                [--tls-cipher cipher-string] [-T] [-N] [-r] -i input-file
-  zabbix_sender -h
-  zabbix_sender -V
-
-
-
-
-
-
-    #!/bin/sh
-
-# Define Zabbix server details
-ZABBIX_SERVER="your_zabbix_server"
-ZABBIX_HOST="your_host_name"
-ZABBIX_ITEM_KEY="bufferpool.discovery"
-
-# Switch to the db2inst1 user and define functions
-su - db2inst1 << 'EOF'  | grep -v 'Last'
-# DB2 connection details
-DB_USER="your_db_username"
-DB_PASS="your_db_password"
-DB_NAME="pegadb"
-
-# Function to execute DB2 queries
-execute_db2_query() {
-    db2 connect to $DB_NAME > /dev/null 2>&1
-    db2 -x "$1"
-}
-
-# Function to get Bufferpools, TOTALHIT, and IDXHIT
-get_bufferpool_stats() {
-    execute_db2_query "SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'"
-}
-
-# Call function to collect buffer pool stats
-bufferpool_stats=$(get_bufferpool_stats)
-
-# Output data in JSON format
-json_data='{"data":['
-first=true
-echo "$bufferpool_stats" | while read -r line; do
-    if [ "$first" = true ]; then
-        first=false
-    else
-        json_data="$json_data,"
-    fi
-    # Extracting bufferpool, totalhit, and idxhit using awk
-    json_data="$json_data$(echo "$line" | awk '{print "{\"{#BUFFERPOOL}\":\"" $1 "\",\"TotalHit\":\"" $2 "\",\"IdxHit\":\"" $3 "\"}"}')"
-done
-json_data="$json_data]}"
-
-# Send JSON data to Zabbix using zabbix_sender utility
-echo "$json_data" | zabbix_sender -z "$ZABBIX_SERVER" -s "$ZABBIX_HOST" -k "$ZABBIX_ITEM_KEY" -i -
-EOF
+With these configurations, Zabbix will automatically discover the buffer pools based on the data obtained from the bufferpool.stats user parameter, and it will create item instances for each discovered buffer pool with the corresponding TotalHit and IdxHit data.
