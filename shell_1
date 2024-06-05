@@ -37,3 +37,8 @@ for line in $result; do
   # send_to_zabbix "bufferpool.totalhit[$bufferpool]" "$totalhit"
   # send_to_zabbix "bufferpool.idxhit[$bufferpool]" "$idxhit"
 done
+
+
+
+Bufferpool: SQL1024N, Total Hit Ratio: A, Index Hit Ratio: database
+
