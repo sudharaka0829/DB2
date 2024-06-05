@@ -22,3 +22,25 @@ Save the item prototypes.
 After creating the discovery rule and item prototypes, ensure to link the discovery rule to the appropriate host(s) in the "Discovery" tab of the host configuration. Finally, click on Update to apply the changes.
 
 With these configurations, Zabbix will automatically discover the buffer pools based on the data obtained from the bufferpool.stats user parameter, and it will create item instances for each discovered buffer pool with the corresponding TotalHit and IdxHit data.
+
+
+
+
+
+
+
+
+
+
+
+{"data":[
+{"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.97","IdxHit":"99.81"}
+,
+{"{#BUFFERPOOL}":"BUFFERPOOL16K","TotalHit":"99.92","IdxHit":"99.77"}
+,
+{"{#BUFFERPOOL}":"BUFFERPOOL8K","TotalHit":"-","IdxHit":"-"}
+,
+{"{#BUFFERPOOL}":"BUFFERPOOL32K","TotalHit":"-","IdxHit":"-"}
+,
+{"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"100.00","IdxHit":"100.00"}
+]}
