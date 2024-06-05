@@ -39,3 +39,9 @@ while read -r bufferpool totalhit idxhit; do
 done <<< "$bufferpools_data"
 echo ']}'
 EOF
+
+
+{"bufferpools":[
+{"name":" SQL0206N ", "total_hits":null, "index_hits":null},
+{"name":" SQLSTATE=42703 ", "total_hits":null, "index_hits":null}]}
+
