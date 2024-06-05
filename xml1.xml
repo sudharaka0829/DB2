@@ -26,3 +26,16 @@ Click Add to save the item prototype.
 Trigger Prototypes (optional):
 
 If you want to create trigger prototypes, follow similar steps as item prototypes within the discovery rule configuration.
+
+
+
+
+sh check.sh -vv
+zabbix_sender [1502887]: ERROR: [line 1] 'Key' required
+Sending failed. Use option -vv for more detailed output.
+
+
+
+
+
+
