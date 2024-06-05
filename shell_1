@@ -13,23 +13,17 @@ execute_db2_query() {
     db2 -x "$1"
 }
 
-# Function to get the database size
-get_database_size() {
-    execute_db2_query "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION" | grep -o '[0-9]*' | head -n1
+# Function to get Bufferpools, TOTALHIT, and IDXHIT
+get_bufferpool_stats() {
+    execute_db2_query "SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'"
 }
 
-
-
-# Call functions to collect data
-database_size=$(get_database_size | sed 's/^[[:space:]]*//')
+# Call function to collect buffer pool stats
+bufferpool_stats=$(get_bufferpool_stats)
 
 # Output data in a format readable by Zabbix
-echo "DatabaseSize:$database_size"
+echo "$bufferpool_stats" | while read -r line; do
+    echo "$line" | awk '{print "Bufferpool:" $1 ", TotalHit:" $2 ", IdxHit:" $3}'
+done
 
 EOF
-
-
-
-Bufferpools , TOTALHIT and IDXHIT
-SELECT BP_NAME as bufferpool,TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'
-
