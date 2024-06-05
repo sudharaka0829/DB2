@@ -1,44 +1,35 @@
-#!/bin/bash
+#!/bin/sh
 
+# Switch to the db2inst1 user and define functions
+su - db2inst1 << 'EOF'  | grep -v 'Last'
 # DB2 connection details
-DB_USER="db2inst1"
-DB_PASS="abcd1234"
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
 DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-  echo "$DB_PASS" | su - $DB_USER -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
 }
 
-# SQL Query
-QUERY="SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO WHERE BP_NAME NOT LIKE 'IBMSYSTEM%'"
-
-# Execute the query and fetch the data
-result=$(execute_db2_query "$QUERY")
-
-# Check if result is empty or contains an error
-if [ -z "$result" ]; then
-  echo "Error: No data returned from the SQL query or connection error."
-  exit 1
-fi
-
-# Process the result
-IFS=$'\n'
-for line in $result; do
-  bufferpool=$(echo $line | awk '{print $1}')
-  totalhit=$(echo $line | awk '{print $2}')
-  idxhit=$(echo $line | awk '{print $3}')
-  
-  # Print the data before sending to Zabbix
-  echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
-  
-  # Send the data to Zabbix
-  # Uncomment these lines once you have verified the data
-  # send_to_zabbix "bufferpool.totalhit[$bufferpool]" "$totalhit"
-  # send_to_zabbix "bufferpool.idxhit[$bufferpool]" "$idxhit"
-done
+# Function to get the database size
+get_database_size() {
+    execute_db2_query "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION" | grep -o '[0-9]*' | head -n1
+}
 
 
 
-Bufferpool: SQL1024N, Total Hit Ratio: A, Index Hit Ratio: database
+# Call functions to collect data
+database_size=$(get_database_size | sed 's/^[[:space:]]*//')
+
+# Output data in a format readable by Zabbix
+echo "DatabaseSize:$database_size"
+
+EOF
+
+
+
+Bufferpools , TOTALHIT and IDXHIT
+SELECT BP_NAME as bufferpool,TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_HIT_RATIO_PERCENT AS idxhit FROM SYSIBMADM.BP_HITRATIO where bp_name not like 'IBMSYSTEM%'
 
