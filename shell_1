@@ -2,21 +2,12 @@
 
 # DB2 connection details
 DB_USER="db2inst1"
-DB_PASS="db2inst1"
-DB_NAME="BOOK"
-
-# Zabbix server details
-ZABBIX_SERVER="<Zabbix server address>"
-ZABBIX_HOST="<Host name>"
+DB_PASS="abcd1234"
+DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
   echo "$DB_PASS" | su - $DB_USER -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
-}
-
-# Function to send data to Zabbix
-send_to_zabbix() {
-  zabbix_sender -z $ZABBIX_SERVER -s $ZABBIX_HOST -k $1 -o $2
 }
 
 # SQL Query
@@ -24,6 +15,12 @@ QUERY="SELECT BP_NAME as bufferpool, TOTAL_HIT_RATIO_PERCENT AS totalhit, INDEX_
 
 # Execute the query and fetch the data
 result=$(execute_db2_query "$QUERY")
+
+# Check if result is empty or contains an error
+if [ -z "$result" ]; then
+  echo "Error: No data returned from the SQL query or connection error."
+  exit 1
+fi
 
 # Process the result
 IFS=$'\n'
@@ -36,11 +33,7 @@ for line in $result; do
   echo "Bufferpool: $bufferpool, Total Hit Ratio: $totalhit, Index Hit Ratio: $idxhit"
   
   # Send the data to Zabbix
-  send_to_zabbix "bufferpool.totalhit[$bufferpool]" "$totalhit"
-  send_to_zabbix "bufferpool.idxhit[$bufferpool]" "$idxhit"
+  # Uncomment these lines once you have verified the data
+  # send_to_zabbix "bufferpool.totalhit[$bufferpool]" "$totalhit"
+  # send_to_zabbix "bufferpool.idxhit[$bufferpool]" "$idxhit"
 done
-
-
-Bufferpool: SQL1024N, Total Hit Ratio: A, Index Hit Ratio: database
-
-db2 connect to pegadb user db2inst1 using abcd1234
