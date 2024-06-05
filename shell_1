@@ -1,0 +1,16 @@
+$ ./get_bufferpool_data.sh
+
+Sending data to Zabbix...
+Bufferpool: BP1, Total Hit Ratio: 98.5, Index Hit Ratio: 97.8
+Sent: bufferpool.totalhit[BP1] with value 98.5
+Sent: bufferpool.idxhit[BP1] with value 97.8
+
+Bufferpool: BP2, Total Hit Ratio: 96.7, Index Hit Ratio: 95.5
+Sent: bufferpool.totalhit[BP2] with value 96.7
+Sent: bufferpool.idxhit[BP2] with value 95.5
+
+Bufferpool: BP3, Total Hit Ratio: 99.1, Index Hit Ratio: 98.6
+Sent: bufferpool.totalhit[BP3] with value 99.1
+Sent: bufferpool.idxhit[BP3] with value 98.6
+
+All data sent successfully.
