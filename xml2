@@ -109,3 +109,27 @@ By setting up the discovery rule and item prototypes, Zabbix will automatically 
 
 
 
+
+
+
+
+
+
+ cat /etc/zabbix/zabbix_agent2.conf
+
+UserParameter=buffer.pool.discovery,/bin/bash /etc/zabbix/scripts/bufferpool.sh
+
+
+
+zabbix agent active 
+
+Buffer Pool Discovery
+key : buffer.pool.discovery
+
+
+Buffer Pool Name - {#BUFFERPOOL}
+key : buffer.pool.name[{#BUFFERPOOL}]
+
+preprocessing jsonpath $.{#BUFFERPOOL}
+
+
