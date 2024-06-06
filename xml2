@@ -133,3 +133,6 @@ key : buffer.pool.name[{#BUFFERPOOL}]
 preprocessing jsonpath $.{#BUFFERPOOL}
 
 
+
+
+[{"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.81"},{"{#BUFFERPOOL}":"BUFFERPOOL16K","TotalHit":"99.93","IdxHit":"99.77"},{"{#BUFFERPOOL}":"BUFFERPOOL8K","TotalHit":"-","IdxHit":"-"},{"{#BUFFERPOOL}":"BUFFERPOOL32K","TotalHit":"-","IdxHit":"-"},{"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.44"}]
