@@ -186,3 +186,22 @@ With this approach, Zabbix will automatically create items for each discovered b
 
 JSONPath expression: $.data[*].{#BUFFERPOOL}
 Output parameter: {#BUFFERPOOL}
+
+
+
+
+
+Discovery Rule
+Configuration > Discovery Rules > Create Discovery Rule
+
+Name: Buffer Pool Discovery
+Type: Zabbix Agent
+Key: bufferpool.stats
+Update interval: Set according to your requirement
+Add a preprocessing step to extract {#BUFFERPOOL} using regular expressions:
+
+Preprocessing Steps:
+Type: Zabbix Agent (active)
+Regular expression: "(\{#BUFFERPOOL\}":".*?")
+Output format: {#BUFFERPOOL}
+JSON path: $
