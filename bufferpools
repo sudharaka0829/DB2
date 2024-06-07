@@ -114,3 +114,9 @@ bufferpool.idxhit[BUFFERPOOL16K]
 	Buffer Pool Discovery: Buffer Pool Name - BUFFERPOOL16K		
 bufferpool.name[BUFFERPOOL16K]
 1m	90d		Zabbix agent (active)	Buffer Pools	Not supported	
+
+
+$.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}" && @.TotalHit != "-")].TotalHit
+
+$.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}" && @.IdxHit != "-")].IdxHit
+
