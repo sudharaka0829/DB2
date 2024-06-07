@@ -12,135 +12,35 @@
 
 
 
-
-
-
-
-Create a Discovery Rule:
-
-Go to Configuration -> Hosts.
-Select the host where you want to create the discovery rule.
-Go to the Discovery rules tab and click Create discovery rule.
-Fill in the details:
-
-Name: Buffer Pool Discovery
-
-Type: Zabbix agent (active)
-
-Key: buffer.pool.discovery
-
-Type of information: JSON
-
-In the Preprocessing section, add a new preprocessing step:
-
-Type: JSONPath
-Parameters: $.data[*]
-Save the discovery rule.
-
-Create Item Prototypes:
-
-After creating the discovery rule, create item prototypes for BUFFERPOOL, TotalHit, and IdxHit.
-
-Go to Configuration -> Hosts.
-
-Select the host where you created the discovery rule.
-
-Go to the Discovery rules tab, find the Buffer Pool Discovery rule, and click on Item prototypes.
-
-Click Create item prototype.
-
 Name: Buffer Pool Name - {#BUFFERPOOL}
-Type: Zabbix agent (active)
-Key: buffer.pool.name[{#BUFFERPOOL}]
+Type: Zabbix Agent (Active)
+Key: bufferpool.name[{#BUFFERPOOL}]
 Type of information: Text
-Applications: (Create an application for buffer pools if needed)
-Preprocessing: Add JSONPath with parameter $.{#BUFFERPOOL}
-Save the item prototype.
+Update interval: 1m
+Preprocessing: Regular expression
+Regular expression: ^([^,]+),.*?,.*$
+Output format: {1}
 
-Create another item prototype for TotalHit.
 
-Name: Total Hit - {#BUFFERPOOL}
-Type: Zabbix agent (active)
-Key: buffer.pool.totalhit[{#BUFFERPOOL}]
+Total Hit Item Prototype:
+
+Name: Buffer Pool Total Hit - {#BUFFERPOOL}
+Type: Zabbix Agent (Active)
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
 Type of information: Numeric (float)
-Applications: (Link to the same application as above)
-Preprocessing: Add JSONPath with parameter $.TotalHit
-Save the item prototype.
+Units: %
+Update interval: 1m
+Preprocessing: Regular expression
+Regular expression: ^{#BUFFERPOOL},([^,]+),.*$
+Output format: {1}
+Index Hit Item Prototype:
 
-Create another item prototype for IdxHit.
-
-Name: Index Hit - {#BUFFERPOOL}
-Type: Zabbix agent (active)
-Key: buffer.pool.idxhit[{#BUFFERPOOL}]
+Name: Buffer Pool Index Hit - {#BUFFERPOOL}
+Type: Zabbix Agent (Active)
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
 Type of information: Numeric (float)
-Applications: (Link to the same application as above)
-Preprocessing: Add JSONPath with parameter $.IdxHit
-Save the item prototype.
-
-Create the Monitoring Item:
-
-Go to Configuration -> Hosts.
-
-Select the host where you created the discovery rule and item prototypes.
-
-Go to the Items tab and click Create item.
-
-Name: Buffer Pool JSON Data
-Type: Zabbix agent (active)
-Key: buffer.pool.json.data
-Type of information: Text
-Applications: (Create an application for buffer pools if needed)
-Update interval: (Set an appropriate interval, e.g., 1m or 5m)
-Save the item.
-
-Configuration Example for JSON Data Collection:
-
-Ensure that your Zabbix agent is configured to collect the JSON data. You might use a custom script or a specific configuration to retrieve the JSON data and send it to Zabbix.
-
-Testing and Visualization:
-
-Wait for the next polling interval and check if the discovered items are being populated with data.
-Go to Monitoring -> Latest data and filter by the host to see if the items for BUFFERPOOL, TotalHit, and IdxHit are appearing with the correct values.
-Create graphs or other visualizations as needed in Zabbix to display the monitored data.
-By setting up the discovery rule and item prototypes, Zabbix will automatically discover and create items for each buffer pool and its associated metrics, ensuring that the data is collected and visualized without manual intervention.
-
-
-
-
-
-
-
-
-
-
-
-
- cat /etc/zabbix/zabbix_agent2.conf
-
-UserParameter=buffer.pool.discovery,/bin/bash /etc/zabbix/scripts/bufferpool.sh
-
-
-
-zabbix agent active 
-
-Buffer Pool Discovery
-key : buffer.pool.discovery
-
-
-Buffer Pool Name - {#BUFFERPOOL}
-key : buffer.pool.name[{#BUFFERPOOL}]
-
-preprocessing jsonpath $.{#BUFFERPOOL}
-
-
-
-
-[{"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.81"},{"{#BUFFERPOOL}":"BUFFERPOOL16K","TotalHit":"99.93","IdxHit":"99.77"},{"{#BUFFERPOOL}":"BUFFERPOOL8K","TotalHit":"-","IdxHit":"-"},{"{#BUFFERPOOL}":"BUFFERPOOL32K","TotalHit":"-","IdxHit":"-"},{"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.44"}]
-
-
-
-
-
-
-
-Cannot connect to ODBC DSN: [SQL_ERROR]:[IM002][0][[unixODBC][Driver Manager]Data source name not found and no default driver specified]
+Units: %
+Update interval: 1m
+Preprocessing: Regular expression
+Regular expression: ^{#BUFFERPOOL},.*?,([^,]+)$
+Output format: {1}
