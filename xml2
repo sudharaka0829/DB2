@@ -123,3 +123,63 @@ Cannot create item: item with the same key "bufferpool.name[{#BUFFERPOOL}]" alre
 
 UserParameter=bufferpool.stats,/etc/zabbix/scripts/bufferpool2.sh
 
+
+
+
+
+No, you don't need preprocessing for item prototypes since the discovery rule already handles the extraction of {#BUFFERPOOL} macro. Here's the corrected process:
+
+Step 1: Script Modification
+Ensure your script generates JSON output as mentioned before.
+
+Step 2: Zabbix Configuration
+UserParameter
+Add the following line to your Zabbix agent configuration file:
+
+plaintext
+Copy code
+UserParameter=bufferpool.stats,/etc/zabbix/scripts/bufferpool2.sh
+Discovery Rule
+Create a discovery rule in Zabbix to discover buffer pools:
+
+Configuration > Discovery Rules > Create Discovery Rule
+Name: Buffer Pool Discovery
+Type: Zabbix Agent
+Key: bufferpool.stats
+Update interval: Set according to your requirement
+Set a filter for {#BUFFERPOOL}:
+Filter: {#BUFFERPOOL}
+Step 3: Item Prototypes
+Create item prototypes to fetch TotalHit and IdxHit values:
+
+Configuration > Templates > Select your template > Discovery Rules Tab
+Click on your "Buffer Pool Discovery" rule.
+Item prototypes:
+Name: Buffer Pool Total Hit - {#BUFFERPOOL}
+Type: Zabbix Agent
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
+Type of information: Numeric (float)
+Data type: Decimal
+Units: %
+Update interval: Set according to your requirement
+Name: Buffer Pool Idx Hit - {#BUFFERPOOL}
+Type: Zabbix Agent
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
+Type of information: Numeric (float)
+Data type: Decimal
+Units: %
+Update interval: Set according to your requirement
+Step 4: Import Data into Zabbix
+Make sure your Zabbix agent is running and configured correctly.
+
+Visualization
+Once the items are discovered and data starts coming in, you can visualize them using Zabbix graphs.
+
+With this approach, Zabbix will automatically create items for each discovered buffer pool without the need for additional preprocessing. Let me know if you have further questions!
+
+
+
+
+
+
+
