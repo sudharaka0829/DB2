@@ -18,3 +18,11 @@ Regular expression: .*?([^,]+),([^,]+),([^,]+)
 Regular expression: ^([^,]+),.*$
 Regular expression: ^([^,]+),([^,]+),([^,]+)$
 Regular expression: ^([^,]+),([^,]+),([^,]+)$
+
+
+BUFFERPOOL,TotalHit,IdxHit
+IBMDEFAULTBP,99.98,99.81
+BUFFERPOOL16K,99.93,99.77
+BUFFERPOOL8K,-,-
+BUFFERPOOL32K,-,-
+MYDB_32K,99.96,99.46
