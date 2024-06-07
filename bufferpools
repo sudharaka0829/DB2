@@ -1,4 +1,4 @@
- cat bufferpools.json
+ sh /etc/zabbix/scripts/bufferpool.sh
 {"data":[
 {"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.82"}
 ,
@@ -12,13 +12,35 @@
 ]}
 
 
-Name: {#BUFFERPOOL} Idx Hit
-Type: Zabbix agent (active)
-Key: bufferpool.idxhit[{#BUFFERPOOL}]
-Data type: Numeric (float)
-Update interval: Same as the discovery rule
-Units: %
-Description: Index Hit ratio for the buffer pool {#BUFFERPOOL}
+Name : Buffer Pool Discovery
+type zabbix agent active
+key : bufferpool.discovery
+preprocessing jsonpath : $.data[*]
 
+This discovery is woking and items are creating
 
-EnableRemoteCommands=1
+item protytype
+name : Buffer Pool Name - {#BUFFERPOOL}
+type : zabbix agent active 
+key : bufferpool.name[{#BUFFERPOOL}]
+type of information : text 
+Update intervals : 1m 
+preprocessing jsonpath : $.{#BUFFERPOOL}
+
+item protytype
+name : Index Hit - {#BUFFERPOOL}
+type : zabbix agent active 
+key : bufferpool.idxhit[{#BUFFERPOOL}]
+type of information : numeric float
+units : % 
+Update intervals : 1m 
+preprocessing json path: $.IdxHit
+
+item protytype
+name : Total Hit - {#BUFFERPOOL}
+type : zabbix agent active 
+key : bufferpool.totalhit[{#BUFFERPOOL}]
+type of information : numeric float
+units : % 
+Update intervals : 1m 
+preprocessing jsonpath : $.TotalHit
