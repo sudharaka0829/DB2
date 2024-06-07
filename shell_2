@@ -29,3 +29,17 @@ echo "BUFFERPOOL,TotalHit,IdxHit"
 echo "$bufferpool_stats" | awk -F ',' '{printf "%s,%s,%s\n", $1, $2, $3}'
 
 EOF
+
+
+
+
+
+BUFFERPOOL,TotalHit,IdxHit
+IBMDEFAULTBP                                                                                                                        99.98   99.81
+         99.93   99.78,,
+BUFFERPOOL8K                                                                                                                            -       -
+             -       -,,
+BUFFERPOOL32K                                                                                                              
+             -       -,,
+MYDB_32K                                                                                                                   
+         99.96   99.46,,
