@@ -211,8 +211,5 @@ Output format: {#BUFFERPOOL}
 JSON path: $
 
 
-
-
 Preprocessing failed for: {"data":[.{"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.81"},.{"{#BUFFERPOOL}":...
-1. Result: {#BUFFERPOOL}
-2. Failed: cannot extract value from json by path "$": cannot parse as a valid JSON object: invalid object name at: '#BUFFERPOOL}'
+1. Failed: cannot extract value from json by path "$.."{#BUFFERPOOL}"": unsupported construct in jsonpath starting with: ""{#BUFFERPOOL}""
