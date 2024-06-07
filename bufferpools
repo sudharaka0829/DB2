@@ -19,3 +19,6 @@ Data type: Numeric (float)
 Update interval: Same as the discovery rule
 Units: %
 Description: Index Hit ratio for the buffer pool {#BUFFERPOOL}
+
+
+EnableRemoteCommands=1
