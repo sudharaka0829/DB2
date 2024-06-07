@@ -120,3 +120,8 @@ $.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}" && @.TotalHit != "-")].TotalHit
 
 $.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}" && @.IdxHit != "-")].IdxHit
 
+
+
+
+$.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}" && @.IdxHit =~ /^[0-9.]+$/)].IdxHit
+
