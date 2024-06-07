@@ -93,36 +93,8 @@ Item Prototypes:
 
 
 
+$.data[*].{#BUFFERPOOL}
 
-Buffer Pool Name - {#BUFFERPOOL}:
+$.data[?({#BUFFERPOOL}=="{#BUFFERPOOL}")].IdxHit
 
-Key: bufferpool.name[{#BUFFERPOOL}]
-Type: Zabbix agent active
-Type of information: Text
-Update intervals: 1m
-Preprocessing: Regular expression
-Regular expression: "({#BUFFERPOOL})":"([^"]+)"
-Pattern: 1
-Output: \2
-Index Hit - {#BUFFERPOOL}:
-
-Key: bufferpool.idxhit[{#BUFFERPOOL}]
-Type: Zabbix agent active
-Type of information: Numeric (float)
-Units: %
-Update intervals: 1m
-Preprocessing: Regular expression
-Regular expression: "IdxHit":"([^"]+)"
-Pattern: 1
-Output: \1
-Total Hit - {#BUFFERPOOL}:
-
-Key: bufferpool.totalhit[{#BUFFERPOOL}]
-Type: Zabbix agent active
-Type of information: Numeric (float)
-Units: %
-Update intervals: 1m
-Preprocessing: Regular expression
-Regular expression: "TotalHit":"([^"]+)"
-Pattern: 1
-Output: \1
+$.data[?({#BUFFERPOOL}=="{#BUFFERPOOL}")].TotalHit
