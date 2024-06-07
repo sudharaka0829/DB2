@@ -19,6 +19,10 @@ Regular expression: ^([^,]+),.*$
 Regular expression: ^([^,]+),([^,]+),([^,]+)$
 Regular expression: ^([^,]+),([^,]+),([^,]+)$
 
+$.."{#BUFFERPOOL}"
+
+
+
 
 BUFFERPOOL,TotalHit,IdxHit
 IBMDEFAULTBP,99.98,99.81
