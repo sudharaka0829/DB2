@@ -26,3 +26,81 @@ BUFFERPOOL16K,99.93,99.77
 BUFFERPOOL8K,-,-
 BUFFERPOOL32K,-,-
 MYDB_32K,99.96,99.46
+
+
+
+
+Name: Buffer Pool Name - {#BUFFERPOOL}
+
+Type: Zabbix Agent (Active)
+
+Key: bufferpool.name[{#BUFFERPOOL}]
+
+Type of information: Text
+
+Update interval: 1m
+
+Preprocessing:
+Click on Add under Preprocessing.
+Select JSONPath.
+Enter $.BUFFERPOOL as the JSONPath expression.
+For Total Hit:
+Name: Buffer Pool Total Hit - {#BUFFERPOOL}
+
+Type: Zabbix Agent (Active)
+
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
+
+Type of information: Numeric (float)
+
+Units: %
+
+Update interval: 1m
+
+Preprocessing:
+Click on Add under Preprocessing.
+Select JSONPath.
+Enter $.TotalHit as the JSONPath expression.
+
+
+
+
+
+
+For Index Hit:
+Name: Buffer Pool Index Hit - {#BUFFERPOOL}
+
+Type: Zabbix Agent (Active)
+
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
+
+Type of information: Numeric (float)
+
+Units: %
+
+Update interval: 1m
+
+Preprocessing:
+Click on Add under Preprocessing.
+Select JSONPath.
+Enter $.IdxHit as the JSONPath expression.
+
+
+
+
+
+
+
+
+Create Total Hit Item Prototype:
+
+Name: Buffer Pool Total Hit - {#BUFFERPOOL}
+Type: Zabbix Agent (Active)
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
+Type of information: Numeric (float)
+Units: %
+Update interval: 1m
+Preprocessing:
+Click on Add under Preprocessing.
+Select JSONPath.
+Enter $.TotalHit.
