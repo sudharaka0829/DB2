@@ -120,3 +120,6 @@ Select CSV to JSON.
 
 Cannot create item: item with the same key "bufferpool.name[{#BUFFERPOOL}]" already exists.
 
+
+UserParameter=bufferpool.stats,/etc/zabbix/scripts/bufferpool2.sh
+
