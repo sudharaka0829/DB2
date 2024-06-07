@@ -61,3 +61,8 @@ Type of information: Numeric (float)
 Units: %
 Update intervals: 1m
 Preprocessing JSON Path: $.IdxHit
+
+
+Preprocessing JSON Path: $.data[*].TotalHit
+Preprocessing JSON Path: $.data[*].IdxHit
+
