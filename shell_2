@@ -26,20 +26,6 @@ bufferpool_stats=$(get_bufferpool_stats)
 
 # Output data in CSV format
 echo "BUFFERPOOL,TotalHit,IdxHit"
-echo "$bufferpool_stats" | awk -F ',' '{printf "%s,%s,%s\n", $1, $2, $3}'
+echo "$bufferpool_stats" | awk -F ',' '{gsub(/^[ \t]+|[ \t]+$/, ""); gsub(/[ \t]+/, ","); print}'
 
 EOF
-
-
-
-
-
-BUFFERPOOL,TotalHit,IdxHit
-IBMDEFAULTBP                                                                                                                        99.98   99.81
-         99.93   99.78,,
-BUFFERPOOL8K                                                                                                                            -       -
-             -       -,,
-BUFFERPOOL32K                                                                                                              
-             -       -,,
-MYDB_32K                                                                                                                   
-         99.96   99.46,,
