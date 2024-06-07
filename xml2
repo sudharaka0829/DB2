@@ -32,3 +32,32 @@ Output format: \1
 {"{#BUFFERPOOL}":"BUFFERPOOL8K","TotalHit":"-","IdxHit":"-"},
 {"{#BUFFERPOOL}":"BUFFERPOOL32K","TotalHit":"-","IdxHit":"-"},
 {"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.46"}]}
+
+
+
+
+Buffer Pool Name
+Name: Buffer Pool Name - {#BUFFERPOOL}
+Type: Zabbix Agent (Active)
+Key: bufferpool.name[{#BUFFERPOOL}]
+Type of information: Text
+Update intervals: 1m
+Preprocessing JSON Path: $.{#BUFFERPOOL}
+
+Total Hit
+Name: Total Hit - {#BUFFERPOOL}
+Type: Zabbix Agent (Active)
+Key: bufferpool.totalhit[{#BUFFERPOOL}]
+Type of information: Numeric (float)
+Units: %
+Update intervals: 1m
+Preprocessing JSON Path: $.TotalHit
+
+Index Hit
+Name: Index Hit - {#BUFFERPOOL}
+Type: Zabbix Agent (Active)
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
+Type of information: Numeric (float)
+Units: %
+Update intervals: 1m
+Preprocessing JSON Path: $.IdxHit
