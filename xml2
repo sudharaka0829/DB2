@@ -22,6 +22,7 @@ Regular expression: ^([^,]+),([^,]+),([^,]+)$
 
 BUFFERPOOL,TotalHit,IdxHit
 IBMDEFAULTBP,99.98,99.81
+
 BUFFERPOOL16K,99.93,99.77
 BUFFERPOOL8K,-,-
 BUFFERPOOL32K,-,-
@@ -183,3 +184,5 @@ With this approach, Zabbix will automatically create items for each discovered b
 
 
 
+JSONPath expression: $.data[*].{#BUFFERPOOL}
+Output parameter: {#BUFFERPOOL}
