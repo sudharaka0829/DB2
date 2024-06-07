@@ -1,8 +1,12 @@
-BUFFERPOOL                                                                                                                       TOTALHIT IDXHIT
--------------------------------------------------------------------------------------------------------------------------------- -------- -------
-IBMDEFAULTBP                                                                                                                        99.97   99.81
-BUFFERPOOL16K                                                                                                                       99.92   99.78
-BUFFERPOOL8K                                                                                                                            -       -
-BUFFERPOOL32K                                                                                                                           -       -
-MYDB_32K                                                                                                                           100.00  100.00
-
+ cat bufferpools.json
+{"data":[
+{"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.82"}
+,
+{"{#BUFFERPOOL}":"BUFFERPOOL16K","TotalHit":"99.93","IdxHit":"99.78"}
+,
+{"{#BUFFERPOOL}":"BUFFERPOOL8K","TotalHit":"-","IdxHit":"-"}
+,
+{"{#BUFFERPOOL}":"BUFFERPOOL32K","TotalHit":"-","IdxHit":"-"}
+,
+{"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.46"}
+]}
