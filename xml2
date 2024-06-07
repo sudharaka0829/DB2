@@ -24,3 +24,7 @@ Type: JSONPath (to Regexp)
 JSONPath expression: $.data.*.\{#BUFFERPOOL\}
 Regular expression: \{"{#BUFFERPOOL}":"([^"]+)"\}
 Output format: \1
+
+
+Preprocessing failed for: {"data":[.{"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.81"},.{"{#BUFFERPOOL}":...
+1. Failed: cannot extract value from json by path "$.."{#BUFFERPOOL}"": unsupported construct in jsonpath starting with: ""{#BUFFERPOOL}""
