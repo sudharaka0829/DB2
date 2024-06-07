@@ -36,3 +36,9 @@ done
 echo ']}'
 
 EOF
+
+
+
+
+Type: JSONPath
+JSONPath expression: $.."{#BUFFERPOOL}"
