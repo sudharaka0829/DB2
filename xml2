@@ -11,47 +11,6 @@
 ]}
 
 
-
-Name: Buffer Pool Name - {#BUFFERPOOL}
-Type: Zabbix Agent (Active)
-Key: bufferpool.name[{#BUFFERPOOL}]
-Type of information: Text
-Update interval: 1m
-Preprocessing: Regular expression
-Regular expression: ^([^,]+),.*?,.*$
-Output format: {1}
-
-
-Total Hit Item Prototype:
-
-Name: Buffer Pool Total Hit - {#BUFFERPOOL}
-Type: Zabbix Agent (Active)
-Key: bufferpool.totalhit[{#BUFFERPOOL}]
-Type of information: Numeric (float)
-Units: %
-Update interval: 1m
-Preprocessing: Regular expression
-Regular expression: ^{#BUFFERPOOL},([^,]+),.*$
-Output format: {1}
-Index Hit Item Prototype:
-
-Name: Buffer Pool Index Hit - {#BUFFERPOOL}
-Type: Zabbix Agent (Active)
-Key: bufferpool.idxhit[{#BUFFERPOOL}]
-Type of information: Numeric (float)
-Units: %
-Update interval: 1m
-Preprocessing: Regular expression
-Regular expression: ^{#BUFFERPOOL},.*?,([^,]+)$
-Output format: {1}
-
-
-
-
-Preprocessing failed for: BUFFERPOOL,TotalHit,IdxHit.IBMDEFAULTBP,99.98,99.81.BUFFERPOOL16K,99.93,99.78.BUFFERPOOL8K,-,-.BU...
-1. Failed: cannot extract value from json by path "$.data[*]": cannot parse as a valid JSON object: invalid object format, expected opening character '{' or '[' at: 'BUFFERPOOL,TotalHit,IdxHit
-IBMDEFAULTBP,99.98,99.81
-BUFFERPOOL16K,99.93,99.78
-BUFFERPOOL8K,-,-
-BUFFERPOOL32K,-,-
-MYDB_32K,99.96,99.46'
+Regular expression: .*?([^,]+),([^,]+),([^,]+)
+Regular expression: .*?([^,]+),([^,]+),([^,]+)
+Regular expression: .*?([^,]+),([^,]+),([^,]+)
