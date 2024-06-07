@@ -32,3 +32,14 @@ echo "$bufferpool_stats" | while read -r line; do
 done
 
 EOF
+
+
+
+
+sh bufferpool2.sh
+BUFFERPOOL,TotalHit,IdxHit
+IBMDEFAULTBP                                                                                                                        99.98   99.81
+BUFFERPOOL16K                                                                                                                       99.93   99.78
+BUFFERPOOL8K                                                                                                                            -       -
+BUFFERPOOL32K                                                                                                                           -       -
+MYDB_32K                                                                                                                            99.96   99.46
