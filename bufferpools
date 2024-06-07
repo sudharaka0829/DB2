@@ -10,3 +10,12 @@
 ,
 {"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.46"}
 ]}
+
+
+Name: {#BUFFERPOOL} Idx Hit
+Type: Zabbix agent (active)
+Key: bufferpool.idxhit[{#BUFFERPOOL}]
+Data type: Numeric (float)
+Update interval: Same as the discovery rule
+Units: %
+Description: Index Hit ratio for the buffer pool {#BUFFERPOOL}
