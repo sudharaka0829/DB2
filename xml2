@@ -14,3 +14,7 @@
 Regular expression: .*?([^,]+),([^,]+),([^,]+)
 Regular expression: .*?([^,]+),([^,]+),([^,]+)
 Regular expression: .*?([^,]+),([^,]+),([^,]+)
+
+Regular expression: ^([^,]+),.*$
+Regular expression: ^([^,]+),([^,]+),([^,]+)$
+Regular expression: ^([^,]+),([^,]+),([^,]+)$
