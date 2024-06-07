@@ -49,3 +49,39 @@ preprocessing jsonpath : $.TotalHit
 Unknown metric bufferpool.idxhit
 Unknown metric bufferpool.name
 Unknown metric bufferpool.totalhit
+
+
+Preprocessing JSON path: $.{#BUFFERPOOL}
+Preprocessing JSON path: $.IdxHit
+Preprocessing JSON path: $.TotalHit
+
+Discovery Rule:
+  Name: Buffer Pool Discovery
+  Type: Zabbix agent active
+  Key: bufferpool.discovery
+  Preprocessing JSONPath: $.data[*]
+
+Item Prototypes:
+1. Name: Buffer Pool Name - {#BUFFERPOOL}
+   - Type: Zabbix agent active
+   - Key: bufferpool.name[{#BUFFERPOOL}]
+   - Type of information: Text
+   - Update intervals: 1m
+   - Preprocessing JSON path: $.{#BUFFERPOOL}
+
+2. Name: Index Hit - {#BUFFERPOOL}
+   - Type: Zabbix agent active
+   - Key: bufferpool.idxhit[{#BUFFERPOOL}]
+   - Type of information: Numeric (float)
+   - Units: %
+   - Update intervals: 1m
+   - Preprocessing JSON path: $.IdxHit
+
+3. Name: Total Hit - {#BUFFERPOOL}
+   - Type: Zabbix agent active
+   - Key: bufferpool.totalhit[{#BUFFERPOOL}]
+   - Type of information: Numeric (float)
+   - Units: %
+   - Update intervals: 1m
+   - Preprocessing JSON path: $.TotalHit
+
