@@ -44,3 +44,8 @@ type of information : numeric float
 units : % 
 Update intervals : 1m 
 preprocessing jsonpath : $.TotalHit
+
+
+Unknown metric bufferpool.idxhit
+Unknown metric bufferpool.name
+Unknown metric bufferpool.totalhit
