@@ -44,3 +44,14 @@ Update interval: 1m
 Preprocessing: Regular expression
 Regular expression: ^{#BUFFERPOOL},.*?,([^,]+)$
 Output format: {1}
+
+
+
+
+Preprocessing failed for: BUFFERPOOL,TotalHit,IdxHit.IBMDEFAULTBP,99.98,99.81.BUFFERPOOL16K,99.93,99.78.BUFFERPOOL8K,-,-.BU...
+1. Failed: cannot extract value from json by path "$.data[*]": cannot parse as a valid JSON object: invalid object format, expected opening character '{' or '[' at: 'BUFFERPOOL,TotalHit,IdxHit
+IBMDEFAULTBP,99.98,99.81
+BUFFERPOOL16K,99.93,99.78
+BUFFERPOOL8K,-,-
+BUFFERPOOL32K,-,-
+MYDB_32K,99.96,99.46'
