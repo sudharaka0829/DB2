@@ -104,3 +104,5 @@ $.data[?(@["{#BUFFERPOOL}"]=="MYDB_32K")].TotalHit
 
 $.data[?(@["{#BUFFERPOOL}"]=="MYDB_32K")].IdxHit
 
+$.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}")].TotalHit
+$.data[?(@["{#BUFFERPOOL}"]=="{#BUFFERPOOL}")].IdxHit
