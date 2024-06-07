@@ -104,3 +104,15 @@ Preprocessing:
 Click on Add under Preprocessing.
 Select JSONPath.
 Enter $.TotalHit.
+
+
+
+Discovery Rule Configuration:
+Name: Buffer Pool Discovery
+Type: Zabbix Agent (Active)
+Key: bufferpool.stats
+Update interval: 1m
+Preprocessing Steps:
+CSV to JSON:
+Click on Add under Preprocessing.
+Select CSV to JSON.
