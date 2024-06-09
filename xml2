@@ -66,3 +66,14 @@ Preprocessing JSON Path: $.IdxHit
 Preprocessing JSON Path: $.data[*].TotalHit
 Preprocessing JSON Path: $.data[*].IdxHit
 
+
+
+DB2 Bufferpools Discovery
+db2.bufferpools.discovery
+
+UserParameter=db2.bufferpools.discovery,/bin/cat /etc/zabbix/bufferpool_data.json
+UserParameter=db2.bufferpools[*],/usr/bin/jq -r '.[] | select(.["{#BUFFERPOOL}"] == "$1") | .$2' /etc/zabbix/bufferpool_data.json
+
+Total Hit Ratio for {#BUFFERPOOL}
+db2.bufferpools[{#BUFFERPOOL},TotalHit]
+
