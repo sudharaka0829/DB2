@@ -73,12 +73,14 @@ db2.bufferpools[{#BUFFERPOOL},IdxHit]
 
 
 
+DB2 Tablespace Discovery
+db2.tablespaces.discovery
 
+Tablespace {#TABLESPACE} TotalKB
+db2.tablespaces[{#TABLESPACE},TotalKB]
 
-
-
-
-
+Tablespace {#TABLESPACE} UsedKB
+db2.tablespaces[{#TABLESPACE},UsedKB]
 
 
 UnsafeUserParameters=1
