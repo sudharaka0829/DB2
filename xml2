@@ -79,3 +79,32 @@ db2.bufferpools[{#BUFFERPOOL},TotalHit]
 
 Index Hit Ratio for {#BUFFERPOOL}
 db2.bufferpools[{#BUFFERPOOL},IdxHit]
+
+
+[
+    {
+        "{#BUFFERPOOL}": "IBMDEFAULTBP",
+        "TotalHit": "99.98",
+        "IdxHit": "99.82"
+    },
+    {
+        "{#BUFFERPOOL}": "BUFFERPOOL16K",
+        "TotalHit": "99.93",
+        "IdxHit": "99.78"
+    },
+    {
+        "{#BUFFERPOOL}": "BUFFERPOOL8K",
+        "TotalHit": "99.50",
+        "IdxHit": "99.30"
+    },
+    {
+        "{#BUFFERPOOL}": "BUFFERPOOL32K",
+        "TotalHit": "99.60",
+        "IdxHit": "99.40"
+    },
+    {
+        "{#BUFFERPOOL}": "MYDB_32K",
+        "TotalHit": "99.96",
+        "IdxHit": "99.46"
+    }
+]
