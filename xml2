@@ -10,22 +10,6 @@
 {"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.44"}
 ]}
 
-
-BUFFERPOOL,TotalHit,IdxHit
-IBMDEFAULTBP,99.98,99.81
-
-BUFFERPOOL16K,99.93,99.77
-BUFFERPOOL8K,-,-
-BUFFERPOOL32K,-,-
-MYDB_32K,99.96,99.46
-
-
-Type: JSONPath (to Regexp)
-JSONPath expression: $.data.*.\{#BUFFERPOOL\}
-Regular expression: \{"{#BUFFERPOOL}":"([^"]+)"\}
-Output format: \1
-
-
 {"data":[
 {"{#BUFFERPOOL}":"IBMDEFAULTBP","TotalHit":"99.98","IdxHit":"99.82"},
 {"{#BUFFERPOOL}":"BUFFERPOOL16K","TotalHit":"99.94","IdxHit":"99.77"},
@@ -34,39 +18,8 @@ Output format: \1
 {"{#BUFFERPOOL}":"MYDB_32K","TotalHit":"99.96","IdxHit":"99.46"}]}
 
 
-
-
-Buffer Pool Name
-Name: Buffer Pool Name - {#BUFFERPOOL}
-Type: Zabbix Agent (Active)
-Key: bufferpool.name[{#BUFFERPOOL}]
-Type of information: Text
-Update intervals: 1m
-Preprocessing JSON Path: $.{#BUFFERPOOL}
-
-Total Hit
-Name: Total Hit - {#BUFFERPOOL}
-Type: Zabbix Agent (Active)
-Key: bufferpool.totalhit[{#BUFFERPOOL}]
-Type of information: Numeric (float)
-Units: %
-Update intervals: 1m
-Preprocessing JSON Path: $.TotalHit
-
-Index Hit
-Name: Index Hit - {#BUFFERPOOL}
-Type: Zabbix Agent (Active)
-Key: bufferpool.idxhit[{#BUFFERPOOL}]
-Type of information: Numeric (float)
-Units: %
-Update intervals: 1m
-Preprocessing JSON Path: $.IdxHit
-
-
 Preprocessing JSON Path: $.data[*].TotalHit
 Preprocessing JSON Path: $.data[*].IdxHit
-
-
 
 DB2 Bufferpools Discovery
 db2.bufferpools.discovery
