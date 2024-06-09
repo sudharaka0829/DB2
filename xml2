@@ -66,3 +66,32 @@ db2.bufferpools[{#BUFFERPOOL},IdxHit]
         "IdxHit": "99.46"
     }
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+UnsafeUserParameters=1
+
+UserParameter=db2.bufferpools.discovery,/bin/cat /etc/zabbix/bufferpool_data.json
+UserParameter=db2.bufferpools[*],/usr/bin/jq -r '.[] | select(.["{#BUFFERPOOL}"] == "$1") | .$2' /etc/zabbix/bufferpool_data.json
+UserParameter=db2.tablespaces.discovery,/bin/cat /etc/zabbix/tablespace_data.json
+UserParameter=db2.tablespaces[*],/usr/bin/jq -r '.[] | select(.["{#TABLESPACE}"] == "$1") | .$2' /etc/zabbix/tablespace_data.json
+
+#UserParameter=db2.dbinfo.discovery,/bin/cat /etc/zabbix/db_info_data.json
+#UserParameter=db2.dbinfo[*],/usr/bin/jq -r '.[] | ."{#PARAMETER}"' /etc/zabbix/db_info_data.json
+
+UserParameter=db2.dbinfo.discovery,/bin/cat /etc/zabbix/db_info_data.json
+#UserParameter=db2.dbinfo[*],/usr/bin/jq -r '.[] | to_entries[] | "\(.key) \(.value)"' /etc/zabbix/db_info_data.json
+UserParameter=db2.dbinfo[*],/usr/bin/jq -r 'to_entries[] | .key + " " + (.value | tostring)' /etc/zabbix/db_info_data.json
+
