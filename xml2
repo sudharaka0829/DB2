@@ -77,3 +77,5 @@ UserParameter=db2.bufferpools[*],/usr/bin/jq -r '.[] | select(.["{#BUFFERPOOL}"]
 Total Hit Ratio for {#BUFFERPOOL}
 db2.bufferpools[{#BUFFERPOOL},TotalHit]
 
+Index Hit Ratio for {#BUFFERPOOL}
+db2.bufferpools[{#BUFFERPOOL},IdxHit]
