@@ -83,6 +83,91 @@ Tablespace {#TABLESPACE} UsedKB
 db2.tablespaces[{#TABLESPACE},UsedKB]
 
 
+
+
+[
+    {
+        "{#TABLESPACE}": "MYDBTEMP_32K",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    },
+    {
+        "{#TABLESPACE}": "MYDB_32K",
+        "UsedKB": "458",
+        "TotalKB": "480"
+    },
+    {
+        "{#TABLESPACE}": "PEGADATA16K_TSD",
+        "UsedKB": "8018",
+        "TotalKB": "8064"
+    },
+    {
+        "{#TABLESPACE}": "PEGADATA16K_TSI",
+        "UsedKB": "1",
+        "TotalKB": "32"
+    },
+    {
+        "{#TABLESPACE}": "PEGARULES4K_TSD",
+        "UsedKB": "50175",
+        "TotalKB": "50176"
+    },
+    {
+        "{#TABLESPACE}": "PEGARULES4K_TSI",
+        "UsedKB": "0",
+        "TotalKB": "32"
+    },
+    {
+        "{#TABLESPACE}": "SYSCATSPACE",
+        "UsedKB": "321",
+        "TotalKB": "352"
+    },
+    {
+        "{#TABLESPACE}": "SYSTOOLSPACE",
+        "UsedKB": "0",
+        "TotalKB": "32"
+    },
+    {
+        "{#TABLESPACE}": "TEMP16K",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    },
+    {
+        "{#TABLESPACE}": "TEMP32K",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    },
+    {
+        "{#TABLESPACE}": "TEMP4K",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    },
+    {
+        "{#TABLESPACE}": "TEMP8K",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    },
+    {
+        "{#TABLESPACE}": "TEMPSPACE1",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    },
+    {
+        "{#TABLESPACE}": "USERSPACE1",
+        "UsedKB": "10929",
+        "TotalKB": "10944"
+    },
+    {
+        "{#TABLESPACE}": "usr_tbsp",
+        "UsedKB": "0",
+        "TotalKB": "0"
+    }
+]
+
+
+
+
+
+
 UnsafeUserParameters=1
 
 UserParameter=db2.bufferpools.discovery,/bin/cat /etc/zabbix/bufferpool_data.json
