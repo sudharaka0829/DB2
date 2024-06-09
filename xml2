@@ -27,6 +27,11 @@ db2.bufferpools.discovery
 UserParameter=db2.bufferpools.discovery,/bin/cat /etc/zabbix/bufferpool_data.json
 UserParameter=db2.bufferpools[*],/usr/bin/jq -r '.[] | select(.["{#BUFFERPOOL}"] == "$1") | .$2' /etc/zabbix/bufferpool_data.json
 
+or
+
+UserParameter=db2.bufferpools[*],/bin/cat /etc/zabbix/bufferpool_data.json | awk -v bufferpool="$1" -v field="$2" '$0 ~ "\"" bufferpool "\""{gsub(/"|,/, ""); print $0}' | awk -F":" '{print $2}'
+
+
 Total Hit Ratio for {#BUFFERPOOL}
 db2.bufferpools[{#BUFFERPOOL},TotalHit]
 
