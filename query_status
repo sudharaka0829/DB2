@@ -1,0 +1,97 @@
+
+[db2inst1@ASOMDWFDB404 ~]$ db2 "select current server as server from sysibm.sysdummy1"
+
+SERVER
+------------------
+PEGADB
+
+  1 record(s) selected.
+
+
+
+[db2inst1@ASOMDWFDB404 ~]$ db2 "SELECT DB_STATUS FROM TABLE(MON_GET_DATABASE(-2)) AS T"
+
+DB_STATUS
+----------------
+ACTIVE
+
+  1 record(s) selected.
+
+
+
+ db2 "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION"
+
+DATABASE_SIZE
+--------------------
+                  68
+
+  1 record(s) selected.
+
+
+ db2 "SELECT tbsp_name as TABLESPACE, sum(tbsp_used_size_kb)/1024 as usedkb,sum(tbsp_tot                   al_size_kb)/1024  as totalkb FROM SYSIBMADM.TBSP_UTILIZATION GROUP BY tbsp_name"
+
+TABLESPACE                                                                                                                                          USEDKB               TOTALKB
+------------------------------------------------------------------------------------------------------------------                   -------------- -------------------- --------------------
+MYDBTEMP_32K                                                                                                                                                           0                    0
+MYDB_32K                                                                                                                                                             458                  480
+PEGADATA16K_TSD                                                                                                                                                     8018                 8064
+PEGADATA16K_TSI                                                                                                                                                        1                   32
+PEGARULES4K_TSD                                                                                                                                                    50175                50176
+PEGARULES4K_TSI                                                                                                                                                        0                   32
+SYSCATSPACE                                                                                                                                                          321                  352
+SYSTOOLSPACE                                                                                                                                                           0                   32
+TEMP16K                                                                                                                                                                0                    0
+TEMP32K                                                                                                                                                                0                    0
+TEMP4K                                                                                                                                                                 0                    0
+TEMP8K                                                                                                                                                                 0                    0
+TEMPSPACE1                                                                                                                                                             0                    0
+USERSPACE1                                                                                                                                                         10929                10944
+usr_tbsp                                                                                                                                                               0                    0
+
+
+
+
+db2 "select count(*) AS ACTIVE_CONNECTIONS FROM SYSIBMADM.APPLICATIONS WHERE APPL_STATUS = 'U'"
+
+ACTIVE_CONNECTIONS
+------------------
+                 0
+
+  1 record(s) selected.
+
+
+
+db2 "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
+
+1
+-----------
+          0
+
+  1 record(s) selected.
+
+
+ db2 "select LOG_UTILIZATION_PERCENT from sysibmadm.MON_TRANSACTION_LOG_UTILIZATION"
+
+LOG_UTILIZATION_PERCENT
+-----------------------
+                   2.96
+
+  1 record(s) selected.
+
+
+db2 get connection state
+
+   Database Connection State
+
+ Connection state       = Connectable and Connected
+ Connection mode        = SHARE
+ Local database alias   = PEGADB
+ Database name          = PEGADB
+ Hostname               =
+ Service name           =
+
+
+ db2 list applications for database pegadb show detail | grep -i "executing" | wc -l
+0
+
+
