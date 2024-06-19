@@ -1,0 +1,8 @@
+UserParameter=db_parameter_log_utilization_percent,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "LOG_UTILIZATION_PERCENT") | .Value'
+UserParameter=db_parameter_connection_state,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "CONNECTION_STATE") | .Value'
+UserParameter=db_parameter_executing_applications,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "EXECUTING_APPLICATIONS") | .Value'
+UserParameter=db_parameter_lock_waits_count,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "LOCK_WAITS_COUNT") | .Value'
+UserParameter=db_parameter_active_connections,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "ACTIVE_CONNECTIONS") | .Value'
+UserParameter=db_parameter_database_size_gb,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "DATABASE_SIZE_GB") | .Value'
+UserParameter=db_parameter_database_status,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "DATABASE_STATUS") | .Value'
+UserParameter=db_parameter_current_server,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "CURRENT_SERVER") | .Value'
