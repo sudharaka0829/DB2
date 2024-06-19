@@ -85,3 +85,13 @@ json_array+=']'
 echo "$json_array" > "$JSON_FILE"
 
 EOF
+
+
+
+
+
+
+
+
+[{"{#PARAMETER}": "LOG_UTILIZATION_PERCENT", "Value": "                   2.83"},{"{#PARAMETER}": "CONNECTION_STATE", "Value": ""},{"{#PARAMETER}": "EXECUTING_APPLICATIONS", "Value": "0"},{"{#PARAMETER}": "LOCK_WAITS_COUNT", "Value": "          0"},{"{#PARAMETER}": "ACTIVE_CONNECTIONS", "Value": "                 0"},{"{#PARAMETER}": "DATABASE_SIZE_GB", "Value": "                  68"},{"{#PARAMETER}": "DATABASE_STATUS", "Value": "ACTIVE          "},{"{#PARAMETER}": "CURRENT_SERVER", "Value": "PEGADB            "}]
+
