@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+
+# Define the path to the JSON file
+JSON_FILE="/etc/zabbix/db_info_data.json"
 
 # Switch to the db2inst1 user and define functions
 su - db2inst1 << 'EOF'
@@ -6,7 +9,6 @@ su - db2inst1 << 'EOF'
 DB_USER="db2inst1"
 DB_PASS="abcd1234"
 DB_NAME="pegadb"
-JSON_FILE="/etc/zabbix/db2_parameters.json"
 
 # Function to execute DB2 queries
 execute_db2_query() {
@@ -16,43 +18,43 @@ execute_db2_query() {
 
 # Function to get log utilization percent
 get_log_utilization() {
-    execute_db2_query "select trim(LOG_UTILIZATION_PERCENT) from sysibmadm.MON_TRANSACTION_LOG_UTILIZATION"
+    execute_db2_query "select TRIM(LOG_UTILIZATION_PERCENT) from sysibmadm.MON_TRANSACTION_LOG_UTILIZATION"
 }
 
 # Function to get connection state
 get_connection_state() {
     db2 connect to $DB_NAME > /dev/null 2>&1
-    db2 get dbm cfg | grep -A 1 "Database Connection State" | awk -F ' = ' '{print $2}' | xargs
+    db2 get dbm cfg | grep -A 1 "Database Connection State" | awk -F '=' '{print $2}' | tr -d '[:space:]'
 }
 
 # Function to count executing applications
 count_executing_apps() {
-    db2 list applications for database $DB_NAME show detail | grep -i "executing" | wc -l | xargs
+    db2 list applications for database $DB_NAME show detail | grep -i "executing" | wc -l | tr -d '[:space:]'
 }
 
 # Function to count lock waits
 count_lock_waits() {
-    execute_db2_query "SELECT trim(COUNT(*)) FROM SYSIBMADM.LOCKWAITS"
+    execute_db2_query "SELECT TRIM(COUNT(*)) FROM SYSIBMADM.LOCKWAITS"
 }
 
 # Function to count active connections
 count_active_connections() {
-    execute_db2_query "select trim(count(*)) AS ACTIVE_CONNECTIONS FROM SYSIBMADM.APPLICATIONS WHERE APPL_STATUS = 'U'"
+    execute_db2_query "select TRIM(count(*)) AS ACTIVE_CONNECTIONS FROM SYSIBMADM.APPLICATIONS WHERE APPL_STATUS = 'U'"
 }
 
 # Function to get total database size
 get_database_size() {
-    execute_db2_query "select trim(sum(TBSP_USED_SIZE_KB) / 1024 / 1024) as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION"
+    execute_db2_query "select TRIM(sum(TBSP_USED_SIZE_KB) / 1024 / 1024) as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION"
 }
 
 # Function to get database status
 get_database_status() {
-    execute_db2_query "SELECT trim(DB_STATUS) FROM TABLE(MON_GET_DATABASE(-2)) AS T"
+    execute_db2_query "SELECT TRIM(DB_STATUS) FROM TABLE(MON_GET_DATABASE(-2)) AS T"
 }
 
 # Function to get current server name
 get_current_server() {
-    execute_db2_query "select trim(current server) as server from sysibm.sysdummy1"
+    execute_db2_query "select TRIM(current server) as server from sysibm.sysdummy1"
 }
 
 # Call functions to collect data
@@ -65,23 +67,16 @@ database_size=$(get_database_size)
 database_status=$(get_database_status)
 current_server=$(get_current_server)
 
-# Construct JSON array
-json_array='['
-
-# Add each parameter as an object to the JSON array
-json_array+='{"{#PARAMETER}": "LOG_UTILIZATION_PERCENT", "Value": "'$log_utilization'"},'
-json_array+='{"{#PARAMETER}": "CONNECTION_STATE", "Value": "'$connection_state'"},'
-json_array+='{"{#PARAMETER}": "EXECUTING_APPLICATIONS", "Value": "'$executing_apps'"},'
-json_array+='{"{#PARAMETER}": "LOCK_WAITS_COUNT", "Value": "'$lock_waits'"},'
-json_array+='{"{#PARAMETER}": "ACTIVE_CONNECTIONS", "Value": "'$active_connections'"},'
-json_array+='{"{#PARAMETER}": "DATABASE_SIZE_GB", "Value": "'$database_size'"},'
-json_array+='{"{#PARAMETER}": "DATABASE_STATUS", "Value": "'$database_status'"},'
-json_array+='{"{#PARAMETER}": "CURRENT_SERVER", "Value": "'$current_server'"}'
-
-# Close JSON array
-json_array+=']'
-
-# Output the JSON array to a file
-echo "$json_array" > "$JSON_FILE"
+# Output data in JSON format without spaces
+echo '{
+    "LOG_UTILIZATION_PERCENT": '$log_utilization',
+    "CONNECTION_STATE": "'$connection_state'",
+    "EXECUTING_APPLICATIONS": '$executing_apps',
+    "LOCK_WAITS_COUNT": '$lock_waits',
+    "ACTIVE_CONNECTIONS": '$active_connections',
+    "DATABASE_SIZE_GB": '$database_size',
+    "DATABASE_STATUS": "'$database_status'",
+    "CURRENT_SERVER": "'$current_server'"
+}' > $JSON_FILE
 
 EOF
