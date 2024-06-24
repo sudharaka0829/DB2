@@ -162,3 +162,59 @@ EOF
 
 # Remove the 'Last' keyword from the output
 sed -i '/Last/d' $JSON_FILE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"MYDBTEMP_32K","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
+,
+{"{#TABLESPACE}":"MYDB_32K","UsedKB":"458","TotalKB":"480","UsedPercentage":"95.42"}
+,
+{"{#TABLESPACE}":"PEGADATA16K_TSD","UsedKB":"8021","TotalKB":"8064","UsedPercentage":"99.47"}
+,
+{"{#TABLESPACE}":"PEGADATA16K_TSI","UsedKB":"1","TotalKB":"32","UsedPercentage":"3.12"}
+,
+{"{#TABLESPACE}":"PEGARULES4K_TSD","UsedKB":"50222","TotalKB":"50240","UsedPercentage":"99.96"}
+,
+{"{#TABLESPACE}":"PEGARULES4K_TSI","UsedKB":"0","TotalKB":"32","UsedPercentage":"0.00"}
+,
+{"{#TABLESPACE}":"SYSCATSPACE","UsedKB":"322","TotalKB":"352","UsedPercentage":"91.48"}
+,
+{"{#TABLESPACE}":"SYSTOOLSPACE","UsedKB":"0","TotalKB":"32","UsedPercentage":"0.00"}
+,
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"TEMP16K","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
+,
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"TEMP32K","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
+,
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"TEMP4K","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
+,
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"TEMP8K","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
+,
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"TEMPSPACE1","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
+,
+{"{#TABLESPACE}":"USERSPACE1","UsedKB":"10973","TotalKB":"10976","UsedPercentage":"99.97"}
+,
+awk: cmd. line:1: error: division by zero attempted
+{"{#TABLESPACE}":"usr_tbsp","UsedKB":"0","TotalKB":"0","UsedPercentage":""}
