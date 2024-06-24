@@ -163,3 +163,15 @@ EOF
 # Remove the 'Last' keyword from the output
 sed -i '/Last/d' $JSON_FILE
 
+
+
+DB2 Tablespace Discovery
+db2.tablespaces.discovery
+
+
+Tablespace {#TABLESPACE} TotalKB
+db2.tablespaces[{#TABLESPACE},TotalKB]
+
+
+Tablespace {#TABLESPACE} UsedKB
+db2.tablespaces[{#TABLESPACE},UsedKB]
