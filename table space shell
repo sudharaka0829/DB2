@@ -4,7 +4,7 @@
 JSON_FILE="/etc/zabbix/scripts/tablespace_data.json"
 
 # Switch to the db2inst1 user and define functions
-su - db2inst1 << 'EOF' | grep -v 'Last'
+su - db2inst1 << 'EOF' > $JSON_FILE
 # DB2 connection details
 DB_USER="db2inst1"
 DB_PASS="abcd1234"
@@ -25,17 +25,20 @@ get_tablespace_stats() {
 tablespace_stats=$(get_tablespace_stats)
 
 # Write data in JSON format to the JSON file
-echo '[' > $JSON_FILE
+echo '['
 first=true
 echo "$tablespace_stats" | while read -r line; do
     if [ "$first" = true ]; then
         first=false
     else
-        echo "," >> $JSON_FILE
+        echo ","
     fi
     # Extracting tablespace, usedkb, and totalkb using awk
-    echo "$line" | awk '{print "{\"{#TABLESPACE}\":\"" $1 "\",\"UsedKB\":\"" $2 "\",\"TotalKB\":\"" $3 "\"}"}' >> $JSON_FILE
+    echo "$line" | awk '{print "{\"{#TABLESPACE}\":\"" $1 "\",\"UsedKB\":\"" $2 "\",\"TotalKB\":\"" $3 "\"}"}'
 done
-echo ']' >> $JSON_FILE
+echo ']'
 
 EOF
+
+# Remove the 'Last' keyword from the output
+sed -i '/Last/d' $JSON_FILE
