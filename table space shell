@@ -175,3 +175,8 @@ db2.tablespaces[{#TABLESPACE},TotalKB]
 
 Tablespace {#TABLESPACE} UsedKB
 db2.tablespaces[{#TABLESPACE},UsedKB]
+
+
+Tablespace {#TABLESPACE} UsedPercentage
+db2.tablespaces[{#TABLESPACE},UsedPercentage]
+
