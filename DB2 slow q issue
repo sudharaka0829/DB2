@@ -1,33 +1,12 @@
-#!/bin/bash
+Event Monitor Creation:
 
-# Switch to the db2inst1 user and define functions
-su - db2inst1 << 'EOF' | grep -v 'Last'
-# DB2 connection details
-DB_USER="db2inst1"
-DB_PASS="abcd1234"
-DB_NAME="pegadb"
+db2 "CREATE EVENT MONITOR act_stmt FOR ACTIVITIES WRITE TO TABLE"
 
-# Function to execute DB2 queries
-execute_db2_query() {
-    db2 connect to $DB_NAME > /dev/null 2>&1
-    db2 -x "$1"
-}
 
-# Function to get slow queries
-get_slow_queries() {
-    execute_db2_query "SELECT AGENT_ID, APPL_NAME, STMT_TEXT, TOTAL_EXECUTION_TIME_MS
-                      FROM SYSIBMADM.SNAPAPPL_SQL
-                      WHERE AGENT_TYPE = 'DRDA'
-                      AND TOTAL_EXECUTION_TIME_MS > 1000 -- Total execution time greater than 1 second (adjust as needed)
-                      ORDER BY TOTAL_EXECUTION_TIME_MS DESC
-                      FETCH FIRST 10 ROWS ONLY"
-}
+Querying Event Monitor State:
 
-# Call function to get slow queries
-slow_queries=$(get_slow_queries)
+db2 "SELECT event_mon_state FROM TABLE(MON_GET_EVENT_MONITOR('ACT_STMT', -2))"
 
-# Output slow queries
-echo "Slow Queries:"
-echo "$slow_queries"
+Monitoring Slow Queries:
 
-EOF
+SELECT A.APPLICATION_NAME, A.UOW_ID, A.ACTIVITY_ID, A.EXECUTION_TIME_TOTAL, A.STMT_TEXT FROM TABLE(MON_GET_ACTIVITY(NULL, -2)) AS A WHERE A.EXECUTION_TIME_TOTAL > 1000000 -- 1 second ORDER BY A.EXECUTION_TIME_TOTAL DESC FETCH FIRST 10 ROWS ONLY;
