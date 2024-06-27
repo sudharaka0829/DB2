@@ -1,10 +1,3 @@
-[db2inst1@ASOMDWFDB404 ~]$ db2 "SELECT APPLICATION_NAME, UOW_ID, ACTIVITY_ID, EXECUTION_TIME_TOTAL, STMT_TEXT FROM TABLE(MON_GET_ACTIVITY(NULL, -2)) AS A WHERE A.EXECUTION_TIME_TOTAL > 1000000 ORDER BY A.EXECUTION_TIME_TOTAL DESC FETCH FIRST 10 ROWS ONLY"
-SQL0206N  "A.EXECUTION_TIME_TOTAL" is not valid in the context where it is
-used.  SQLSTATE=42703
-
-SELECT APPLICATION_HANDLE, UOW_LOG_SPACE_USED, ACTIVITY_ID, STMT_TEXT FROM TABLE(MON_GET_ACTIVITY(NULL, -2)) AS A WHERE A.SECONDS_ACTIVE > 1 ORDER BY A.SECONDS_ACTIVE DESC FETCH FIRST 10 ROWS ONLY"
-
-
 #!/bin/bash
 
 # Switch to the db2inst1 user and define functions
@@ -22,11 +15,11 @@ execute_db2_query() {
 
 # Function to get slow queries
 get_slow_queries() {
-    execute_db2_query "SELECT AGENT_ID, APPL_NAME, STMT_TEXT, TOTAL_EXEC_TIME, EXEC_TIME_PER_ROW
-                      FROM SYSIBMADM.SNAPAPPL
-                      WHERE AGENT_TYPE = 'Application'
-                      AND TOTAL_EXEC_TIME > 1000000 -- Total execution time greater than 1 second
-                      ORDER BY TOTAL_EXEC_TIME DESC
+    execute_db2_query "SELECT AGENT_ID, APPL_NAME, STMT_TEXT, TOTAL_EXECUTION_TIME_MS
+                      FROM SYSIBMADM.SNAPAPPL_SQL
+                      WHERE AGENT_TYPE = 'DRDA'
+                      AND TOTAL_EXECUTION_TIME_MS > 1000 -- Total execution time greater than 1 second (adjust as needed)
+                      ORDER BY TOTAL_EXECUTION_TIME_MS DESC
                       FETCH FIRST 10 ROWS ONLY"
 }
 
