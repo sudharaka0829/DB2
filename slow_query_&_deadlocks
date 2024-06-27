@@ -29,6 +29,10 @@ echo "Deadlock count: $deadlock_count"
 
 EOF
 ----------------------------------------------------------------------
+Deadlock count: SQL0204N  "SYSIBMADM.MON_LOCKWAIT" is an undefined name.  SQLSTATE=42704
+
+
+
 
 slow queries
 
