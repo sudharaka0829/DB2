@@ -1,0 +1,2 @@
+db2pd -db <database_name> -locks show detail | grep '^0x' | wc -l
+
