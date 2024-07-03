@@ -6,3 +6,6 @@ UserParameter=db_parameter_active_connections,/bin/cat /etc/zabbix/data.json | /
 UserParameter=db_parameter_database_size_gb,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "DATABASE_SIZE_GB") | .Value'
 UserParameter=db_parameter_database_status,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "DATABASE_STATUS") | .Value'
 UserParameter=db_parameter_current_server,/bin/cat /etc/zabbix/data.json | /usr/bin/jq -r '.[] | select(.["{#PARAMETER}"] == "CURRENT_SERVER") | .Value'
+
+
+{SPRMPRTDB101:log[/rtedbhome/db2rtins/sqllib/db2dump/db2diag.log,"Error|ERROR"].regexp(.)}=1
