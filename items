@@ -9,3 +9,6 @@ UserParameter=db_parameter_current_server,/bin/cat /etc/zabbix/data.json | /usr/
 
 
 {SPRMPRTDB101:log[/rtedbhome/db2rtins/sqllib/db2dump/db2diag.log,"Error|ERROR"].regexp(.)}=1
+
+log[/var/mqm/qmgrs/SPRRTE/errors/AMQERR01.LOG,"AMQ9999E|AMQ9616E|AMQ9526E"]
+
