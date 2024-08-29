@@ -1,12 +1,36 @@
-Event Monitor Creation:
-
-db2 "CREATE EVENT MONITOR act_stmt FOR ACTIVITIES WRITE TO TABLE"
-
-
-Querying Event Monitor State:
-
-db2 "SELECT event_mon_state FROM TABLE(MON_GET_EVENT_MONITOR('ACT_STMT', -2))"
-
-Monitoring Slow Queries:
-
-SELECT A.APPLICATION_NAME, A.UOW_ID, A.ACTIVITY_ID, A.EXECUTION_TIME_TOTAL, A.STMT_TEXT FROM TABLE(MON_GET_ACTIVITY(NULL, -2)) AS A WHERE A.EXECUTION_TIME_TOTAL > 1000000 -- 1 second ORDER BY A.EXECUTION_TIME_TOTAL DESC FETCH FIRST 10 ROWS ONLY;
+#!/bin/sh
+ 
+# Switch to the db2zbxmon user
+su - db2zbxmon << 'EOF' | grep -v 'Last'
+# DB2 connection details
+DB_USER="db2zbxmon"
+DB_PASS="abcd1234"
+DB_NAME="RTEUDB01"
+ 
+# Function to execute DB2 queries
+execute_db2_query() {
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
+}
+ 
+# Function to generate DB Summary
+call_monreport_dbsummary() {
+    execute_db2_query "call monreport.dbsummary(5)" > /systemlogs/db2_mon/dbsummary_`date +%Y%m%d`_`date +%H%M`.out
+}
+ 
+# Function to generate package summary
+call_monreport_pkgcache() {
+    execute_db2_query "call monreport.pkgcache(5)" > /systemlogs/db2_mon/pkgcache_`date +%Y%m%d`_`date +%H%M`.out
+}
+ 
+# Function to generate DB Summary
+call_report_summary=$(call_monreport_dbsummary)
+ 
+# Function to generate package summary
+call_report_summary=$(call_monreport_pkgcache)
+ 
+find /systemlogs/db2_mon/ -mtime +20 -name "dbsummary_20*" -exec rm {} \;
+find /systemlogs/db2_mon/ -mtime +20 -name "pkgcache_20*" -exec rm {} \;
+ 
+EOF
+exit
